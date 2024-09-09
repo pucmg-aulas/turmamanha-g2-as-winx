@@ -6,7 +6,7 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 * Brenda Evers
 * Maria Clara
-* Nome completo do aluno 3
+* João Victor Filardi Souza Pinto
 * Nome completo do aluno 4
 * Matheus Gaston Viana Silveira
 
