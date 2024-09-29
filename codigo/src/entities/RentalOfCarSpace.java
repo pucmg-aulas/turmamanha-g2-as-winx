@@ -1,5 +1,6 @@
 package entities;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class RentalOfCarSpace {
@@ -48,5 +49,41 @@ public class RentalOfCarSpace {
         this.rentalId = rentalId;
     }
 
+    public String calculateTime(LocalDateTime startRental, LocalDateTime endRental){
+        Duration duration = Duration.between(startRental, endRental);
+        Long hours = duration.toHours();
+        Long minutes = duration.toMinutes() % 60;
+        Long seconds = duration.toSeconds() % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    public Double calculatePrice(LocalDateTime startRental, LocalDateTime endRental){
+        Double fraction = 4.0;
+        Double fractionPrice = 0.0;
+        Double hourPrice = 0.0;
+        Double totalPrice = 0.0;
+        
+        Duration duration = Duration.between(startRental, endRental);
+        Long minutes = duration.toMinutes();
+        Long hours = duration.toHours();
+        // exemplo 4:46 = 80 R$
+
+        if(minutes > 15){
+            if(minutes/15 > 3){
+                fractionPrice = fraction * 4;
+            }else if(minutes/15 > 2){
+                fractionPrice = fraction * 3;
+            }else if(minutes/15 > 1){
+                fractionPrice = fraction * 2;
+            }else{
+                fractionPrice = fraction;
+            }
+        }
+        
+        hourPrice = hours * fraction *4;
+        totalPrice = hourPrice + fractionPrice;
+
+        return totalPrice;
+    }
     
 }
