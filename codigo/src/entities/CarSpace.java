@@ -1,12 +1,12 @@
 package entities;
 
-public class ParkingSpot {
+public class carSpace {
 
     private String spotId;
     private boolean isOccupied;
 
     
-    public ParkingSpot(String spotId) {
+    public carSpace(String spotId) {
         this.spotId = spotId;
         this.isOccupied = false; 
     }
@@ -29,7 +29,7 @@ public class ParkingSpot {
     }
 
     
-    public void allocateSpot(Rental rental) {
+    public void allocateSpot(RentalOfCarSpace rentalOfCarSpace) {
         if (!isOccupied) {
             this.isOccupied = true;
             System.out.println("Spot allocated: " + this.spotId);
