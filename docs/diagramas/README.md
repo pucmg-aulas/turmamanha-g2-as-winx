@@ -9,4 +9,4 @@ Coloque aqui todas as versões do seu diagrama de classes. Cada versão deve com
 ![Java_parking](https://github.com/user-attachments/assets/0c833665-f906-4c41-87c6-81432041d8e3)
 
 * 1.2
-![Java_parking](JavaParkings1.2v.jpg)
+![Java_parking](https://github.com/user-attachments/assets/f09e023a-56de-45ca-b36f-d941f998ec6d)
