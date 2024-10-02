@@ -60,8 +60,8 @@ public class RentalOfCarSpace {
     public Double calculatePrice(LocalDateTime startRental, LocalDateTime endRental){
         Double fraction = 4.0;
         Double fractionPrice = 0.0;
-        Double hourPrice = 0.0;
-        Double totalPrice = 0.0;
+        Double hourPrice;
+        Double totalPrice;
         
         Duration duration = Duration.between(startRental, endRental);
         Long minutes = duration.toMinutes();
@@ -83,6 +83,9 @@ public class RentalOfCarSpace {
         hourPrice = hours * fraction *4;
         totalPrice = hourPrice + fractionPrice;
 
+        if(totalPrice>50){
+            totalPrice = 50.0;
+        }
         return totalPrice;
     }
     

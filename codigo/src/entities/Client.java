@@ -40,7 +40,7 @@ public class Client {
 
 	public void removeVehicle(String plate){
 		for(Vehicle findVehicle : vehicles){
-			if(findVehicle.getPlate() == plate){
+			if(findVehicle.getPlate() == null ? plate == null : findVehicle.getPlate().equals(plate)){
 				vehicles.remove(findVehicle);
 				System.out.println("Vehicle removed !");
 			}

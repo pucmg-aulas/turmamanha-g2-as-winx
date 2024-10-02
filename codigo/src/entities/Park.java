@@ -28,4 +28,20 @@ public class Park {
                      }
               }
        }
+
+       public void listCarSpacesAvailables(){
+              int parkMat[][] = new int[5][5];
+              char letter;
+              System.out.println("Parking Entrance");
+              for(int i=0; i<5;i++){
+                  for(int j=0; j<5;j++){
+                      parkMat[i][j] = j;
+                      letter = (char) ('A' + i);
+                      System.out.printf("%c%d ", letter, parkMat[i][j]);
+                  }
+                  System.out.println();
+              }
+              System.out.println("Parking Exit");
+          }
+
 }

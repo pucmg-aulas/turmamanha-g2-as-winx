@@ -1,12 +1,15 @@
 package entities;
 
-public class carSpace {
+public class CarSpace {
 
     private String spotId;
     private boolean isOccupied;
 
+    public CarSpace(){
+        
+    }
     
-    public carSpace(String spotId) {
+    public CarSpace(String spotId) {
         this.spotId = spotId;
         this.isOccupied = false; 
     }
@@ -47,5 +50,7 @@ public class carSpace {
             System.out.println("Spot is already available.");
         }
     }
+
+
 }
 
