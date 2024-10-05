@@ -48,9 +48,7 @@ public class Client {
 		System.out.println("Vehicle not found !");
 	}
 
-	public void setAnonymous(int idClient, ArrayList<Vehicle> vehicles){
-		this.idClient = idClient;
-		this.vehicles = vehicles;
-		this.name = "anonymousClient";
+	public String setAnonymous(int idClient){
+		return "anonymousClient";
 	}
 }

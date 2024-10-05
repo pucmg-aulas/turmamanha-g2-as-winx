@@ -1,5 +1,6 @@
 package application;
 
+import entities.Client;
 import entities.Park;
 import java.util.Scanner;
 
@@ -32,7 +33,24 @@ public class Program {
 			option = sc.nextInt();
 			switch (option) {
 				case 1:
-					
+					System.out.println("1 - Register new client.\n2 - Register anonymous client");
+					int optionClient = sc.nextInt();
+					int clientId = 0;
+					switch (optionClient) {
+						case 1:
+							System.out.print("Enter client name: ");
+							String clientName = sc.nextLine();
+							Client newClient = new Client(clientId, clientName);
+							System.out.println("Client registered: " + newClient.getName() + " (ID: " + newClient.getIdClient() + ")");
+							clientId++;
+							break;
+						case 2: 
+							Client anonymousClient = new Client(clientId, "Default");
+							anonymousClient.setAnonymous(clientId);
+							System.out.println("Anonymous client registered!");
+							clientId++;
+						
+					}
 					break;
 				case 2:
 					
