@@ -66,7 +66,6 @@ public class RentalOfCarSpace {
         Duration duration = Duration.between(startRental, endRental);
         Long minutes = duration.toMinutes();
         Long hours = duration.toHours();
-        // exemplo 4:46 = 80 R$
 
         if(minutes > 15){
             if(minutes/15 > 3){

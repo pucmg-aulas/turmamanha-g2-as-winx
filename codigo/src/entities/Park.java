@@ -2,46 +2,56 @@ package entities;
 
 public class Park {
        private int numberParkingSpaces;
-       private CarSpace[] carSpaces;
-       private double pricePerHour;
-       private double pricePerMinute;
        private int idPark;
 
-       public Park(int numberParkingSpaces, double pricePerHour, double pricePerMinute, int idPark) {
-              this.numberParkingSpaces = numberParkingSpaces;
-              this.pricePerHour = pricePerHour;
-              this.pricePerMinute = pricePerMinute;
-              this.idPark = idPark;
-              this.carSpaces = new CarSpace[numberParkingSpaces];
+       private boolean parkingSpaces[][];
+       private final int rows;
+       private final int columns;
+
+       public Park(int rows, int columns) {
+              this.rows = rows;
+              this.columns = columns;
+              parkingSpaces = new boolean[rows][columns];
        }
+       
        public int getNumberParkingSpaces() {
               return numberParkingSpaces;
        }
        public void setNumberParkingSpaces(int numberParkingSpaces) {
               this.numberParkingSpaces = numberParkingSpaces;
        }
-       public void addCarSpace(CarSpace carSpace) {
-              for (int i = 0; i < carSpaces.length; i++) {
-                     if (carSpaces[i] == null) {
-                            carSpaces[i] = carSpace;
-                            break;
-                     }
+
+       public boolean occupySpot(int row, int column) {
+              if (!parkingSpaces[row][column]) { 
+                  parkingSpaces[row][column] = true; 
+                  System.out.println("Spot successfully occupied.");
+                  return true;
+              } else {
+                  System.out.println("Spot is already occupied!");
+                  return false;
               }
        }
 
-       public void listCarSpacesAvailables(){
-              int parkMat[][] = new int[5][5];
-              char letter;
+       public boolean freeSpot(int row, int column) {
+              if (parkingSpaces[row][column]) { 
+                  parkingSpaces[row][column] = false; 
+                  System.out.println("Spot successfully freed.");
+                  return true;
+              } else {
+                  System.out.println("The spot is already free!");
+                  return false;
+              }
+          }
+
+       public void listCarSpacesAvailables() {
               System.out.println("Parking Entrance");
-              for(int i=0; i<5;i++){
-                  for(int j=0; j<5;j++){
-                      parkMat[i][j] = j;
-                      letter = (char) ('A' + i);
-                      System.out.printf("%c%d ", letter, parkMat[i][j]);
+              for (int i = 0; i < rows; i++) {
+                  for (int j = 0; j < columns; j++) {
+                      System.out.print((parkingSpaces[i][j] ? "[X]" : "[ ]") + " "); 
                   }
                   System.out.println();
               }
               System.out.println("Parking Exit");
           }
-
+       
 }

@@ -8,7 +8,7 @@ public class Client {
 	private ArrayList<Vehicle> vehicles = new ArrayList<>();
 
 	
-	public Client(int idClient, String name, ArrayList<Vehicle> vehicles) {
+	public Client(int idClient, String name) {
 		this.idClient = idClient;
 		this.name = name;
 		this.vehicles = vehicles;
