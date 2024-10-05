@@ -1,54 +1,43 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
-	private int idClient;
-	private String name;
-	private ArrayList<Vehicle> vehicles = new ArrayList<>();
+    private int id;
+    private String name;
+    private List<Vehicle> vehicles;
 
-	
-	public Client(int idClient, String name) {
-		this.idClient = idClient;
-		this.name = name;
-		this.vehicles = vehicles;
-	}
+    public Client(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.vehicles = new ArrayList<>(); 
+    }
 
-	public int getIdClient() {
-		return idClient;
-	}
-	public void setIdClient(int idClient) {
-		this.idClient = idClient;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public ArrayList<Vehicle> getVehicles() {
-		return vehicles;
-	}
-	public void setVehicles(ArrayList<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
-	public void addVehicle(String plate, String model){
-		Vehicle vehicle = new Vehicle(plate, model);
-		vehicles.add(vehicle);
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void removeVehicle(String plate){
-		for(Vehicle findVehicle : vehicles){
-			if(findVehicle.getPlate() == null ? plate == null : findVehicle.getPlate().equals(plate)){
-				vehicles.remove(findVehicle);
-				System.out.println("Vehicle removed !");
-			}
-		}
-		System.out.println("Vehicle not found !");
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String setAnonymous(int idClient){
-		return "anonymousClient";
-	}
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+        System.out.println("Vehicle with plate " + vehicle.getPlate() + " registered for client " + name);
+    }
+
+    public void showVehicles() {
+        if (vehicles.isEmpty()) {
+            System.out.println("No vehicles registered for " + name);
+        } else {
+            for (Vehicle v : vehicles) {
+                System.out.println("Vehicle: " + v.getModel() + " - Plate: " + v.getPlate());
+            }
+        }
+    }
 }
