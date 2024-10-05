@@ -23,8 +23,7 @@ public class Program {
 		 
          */
         // INICIALIZATING PARK
-        Park ui = new Park(8, 8);
-        Park park = new Park();
+        Park park = new Park(8, 8);
 
         // Test of ocuppying spots
         Client c1 = new Client(6, "Alice");
@@ -43,12 +42,15 @@ public class Program {
         c1.addVehicle(voyage);
         c2.addVehicle(corolla);
         //ui.occupySpot(row, column, clientId, licensePlate);
-        ui.occupySpot(3, 3, 10, "123");
-        ui.occupySpot(3, 4, 10, "125");
-        ui.occupySpot(3, 5, 9, "124");
+        park.occupySpot(3, 3, 6, "123");
+		park.occupySpot(0, 1, 6, "124");
+		park.occupySpot(0, 0, 7, "125");
+
+        System.out.println("\nAvailable Parking Spaces after attempts:");
+        park.listCarSpacesAvailables();
 
         int option;
-
+		/* 
         do {
             System.out.println("WELCOME TO WINX PARKING!\nPLEASE SELECT AN OPTION");
             System.out.println("0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles");
@@ -79,7 +81,7 @@ public class Program {
                     park.registerVehicleForClient();
                     break;
                 case 3:
-                    ui.listCarSpacesAvailables();
+                    park.listCarSpacesAvailables();
                     sc.nextLine();
                     break;
                 case 4:
@@ -113,16 +115,16 @@ public class Program {
                     sc.nextLine();
                     ui.freeSpot(row, column);
                     break;
-				case 6:
-					park.listClientsAndVehicles();
-					break;
+                case 6:
+                    park.listClientsAndVehicles();
+                    break;
                 default:
 
                     break;
             }
         } while (option
                 != 0);
-
+		*/
         sc.close();
     }
 

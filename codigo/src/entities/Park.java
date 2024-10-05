@@ -14,14 +14,15 @@ public class Park {
     private List<Client> clients;
 
     public Park() {
-        this.clients = new ArrayList<>(); 
+        this.clients = new ArrayList<>();
+        this.parkingSpaces = new boolean[8][8];
     }
 
     public Park(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.parkingSpaces = new boolean[rows][columns];
-        this.clients = new ArrayList<>(); 
+        this.clients = new ArrayList<>();
     }
 
     public int getNumberParkingSpaces() {
@@ -58,7 +59,7 @@ public class Park {
         }
 
         LocalDateTime parkingTime = LocalDateTime.now();
-        parkingSpaces[row][column] = true;
+        parkingSpaces[row][column] = true; // Atualiza a matriz
         System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel()
                 + " (Plate: " + selectedVehicle.getPlate() + ")"
                 + " at " + parkingTime);
@@ -123,6 +124,7 @@ public class Park {
         Vehicle newVehicle = new Vehicle(licensePlate, model);
         client.addVehicle(newVehicle);
     }
+
     public void listClientsAndVehicles() {
         System.out.println("Clients and their Vehicles:");
         for (Client client : clients) {
