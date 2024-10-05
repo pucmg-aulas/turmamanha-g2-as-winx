@@ -8,22 +8,20 @@ import java.util.Scanner;
 public class Park {
 
     private int numberParkingSpaces;
-    private int idPark;
     private boolean parkingSpaces[][];
     private int rows;
     private int columns;
     private List<Client> clients;
-    private Scanner sc;
 
     public Park() {
-        this.sc = new Scanner(System.in);
-        this.clients = new ArrayList<>();
+        this.clients = new ArrayList<>(); 
     }
 
     public Park(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.parkingSpaces = new boolean[rows][columns];
+        this.clients = new ArrayList<>(); 
     }
 
     public int getNumberParkingSpaces() {
@@ -60,7 +58,6 @@ public class Park {
         }
 
         LocalDateTime parkingTime = LocalDateTime.now();
-
         parkingSpaces[row][column] = true;
         System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel()
                 + " (Plate: " + selectedVehicle.getPlate() + ")"
@@ -106,6 +103,7 @@ public class Park {
     }
 
     public void registerVehicleForClient() {
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the client ID: ");
         int clientId = sc.nextInt();
         sc.nextLine();
@@ -124,5 +122,19 @@ public class Park {
 
         Vehicle newVehicle = new Vehicle(licensePlate, model);
         client.addVehicle(newVehicle);
+    }
+    public void listClientsAndVehicles() {
+        System.out.println("Clients and their Vehicles:");
+        for (Client client : clients) {
+            System.out.println("Client ID: " + client.getId() + ", Name: " + client.getName());
+            if (client.getVehicles().isEmpty()) {
+                System.out.println("  No vehicles registered.");
+            } else {
+                System.out.println("  Vehicles:");
+                for (Vehicle vehicle : client.getVehicles()) {
+                    System.out.println("    - " + vehicle.getPlate() + " (" + vehicle.getModel() + ")");
+                }
+            }
+        }
     }
 }

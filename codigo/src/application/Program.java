@@ -2,6 +2,7 @@ package application;
 
 import entities.Client;
 import entities.Park;
+import entities.Vehicle;
 import java.util.Scanner;
 
 public class Program {
@@ -21,19 +22,36 @@ public class Program {
 		System.out.println("The total price of the ticket is: " + totalPrice);
 		 
          */
-        //ocuppying spots test
+        // INICIALIZATING PARK
         Park ui = new Park(8, 8);
         Park park = new Park();
-        Client c1 = new Client(10, "Christian");
-        Client c2 = new Client(9, "Maria");
-        ui.occupySpot(3, 3);
-        ui.occupySpot(3, 4);
-        ui.occupySpot(3, 5);
+
+        // Test of ocuppying spots
+        Client c1 = new Client(6, "Alice");
+        Client c2 = new Client(7, "Bob");
+        Client c3 = new Client(8, "Christian");
+        Client c4 = new Client(9, "Maria");
+
+        park.addClient(c1);
+        park.addClient(c2);
+        park.addClient(c3);
+        park.addClient(c4);
+        Vehicle onix = new Vehicle("123", "onix");
+        Vehicle voyage = new Vehicle("124", "voyage");
+        Vehicle corolla = new Vehicle("125", "corolla");
+        c1.addVehicle(onix);
+        c1.addVehicle(voyage);
+        c2.addVehicle(corolla);
+        //ui.occupySpot(row, column, clientId, licensePlate);
+        ui.occupySpot(3, 3, 10, "123");
+        ui.occupySpot(3, 4, 10, "125");
+        ui.occupySpot(3, 5, 9, "124");
 
         int option;
+
         do {
             System.out.println("WELCOME TO WINX PARKING!\nPLEASE SELECT AN OPTION");
-            System.out.println("0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot");
+            System.out.println("0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles");
             option = sc.nextInt();
             switch (option) {
                 case 1:
@@ -70,11 +88,11 @@ public class Program {
                     int row = sc.nextInt();
                     System.out.print("Enter column: ");
                     int column = sc.nextInt();
-                    sc.nextLine(); 
+                    sc.nextLine();
 
                     System.out.print("Enter the client ID: ");
                     int idClient = sc.nextInt();
-                    sc.nextLine(); 
+                    sc.nextLine();
 
                     System.out.print("Enter the vehicle license plate: ");
                     String licensePlate = sc.nextLine();
@@ -95,11 +113,15 @@ public class Program {
                     sc.nextLine();
                     ui.freeSpot(row, column);
                     break;
+				case 6:
+					park.listClientsAndVehicles();
+					break;
                 default:
 
                     break;
             }
-        } while (option != 0);
+        } while (option
+                != 0);
 
         sc.close();
     }
