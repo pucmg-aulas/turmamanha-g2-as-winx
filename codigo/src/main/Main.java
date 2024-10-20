@@ -1,11 +1,11 @@
-package application;
+package main;
 
 import entities.Client;
 import entities.Park;
 import entities.Vehicle;
 import java.util.Scanner;
 
-public class Program {
+public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
