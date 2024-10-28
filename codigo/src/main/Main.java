@@ -148,8 +148,17 @@ public class Main {
 	private static void runGraphicalInterface(Park park) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				/*
 				ParkingSpotsView view = new ParkingSpotsView(park.getRows(), park.getColumns());
 				ParkingSpotsController controller = new ParkingSpotsController(view, park);
+				*/
+
+				AddClientView view = new AddClientView();
+				AddClientController controller = new AddClientController(view, park);
+				/*
+				AddVehicleView view = new AddVehicleView();
+				AddVehicleController controller = new AddVehicleController(view, park);
+				*/
 				view.setVisible(true);
 			}
 		});

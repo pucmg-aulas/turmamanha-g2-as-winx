@@ -33,7 +33,6 @@ public class AddClientView extends JFrame {
             }
         });
     }
-
     public AddClientView() {
         setTitle("Register Client");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
