@@ -1,6 +1,5 @@
-/model/
-/view/
 /controller/
-/entities/
 /main/
+/model/
 /test/
+/view/

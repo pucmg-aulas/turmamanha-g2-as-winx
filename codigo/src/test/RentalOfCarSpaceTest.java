@@ -12,7 +12,7 @@ import model.RentalOfCarSpace;
 class RentalOfCarSpaceTest {
 
 	@Test
-	public void CalculateTime() {
+	public void CalculateTimeTest() {
 		RentalOfCarSpace r1 = new RentalOfCarSpace(null, null, null, null, 0);
         LocalDateTime startDateTime = LocalDateTime.of(2024, 9, 29, 8, 0);
         LocalDateTime endDateTime = LocalDateTime.of(2024, 9, 29, 12, 46);
@@ -23,8 +23,9 @@ class RentalOfCarSpaceTest {
         		
         assertEquals(timeExpected, duration);
 	}
+	
 	@Test
-	public void CalculatePrice() {
+	public void CalculateMaxPriceTest() {
 		RentalOfCarSpace r1 = new RentalOfCarSpace(null, null, null, null, 0);
         LocalDateTime startDateTime = LocalDateTime.of(2024, 9, 29, 8, 0);
         LocalDateTime endDateTime = LocalDateTime.of(2024, 9, 29, 12, 46);
@@ -33,6 +34,20 @@ class RentalOfCarSpaceTest {
         Double totalPrice = r1.calculatePrice(startDateTime, endDateTime);
         
         Double priceExpected = 50.0;
+        			
+        assertEquals(priceExpected, totalPrice, 0.0001);
+	}
+	
+	@Test
+	public void CalculateMinPriceTest() {
+		RentalOfCarSpace r1 = new RentalOfCarSpace(null, null, null, null, 0);
+        LocalDateTime startDateTime = LocalDateTime.of(2024, 9, 29, 8, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(2024, 9, 29, 8, 14);
+
+        String duration = r1.calculateTime(startDateTime, endDateTime);
+        Double totalPrice = r1.calculatePrice(startDateTime, endDateTime);
+        
+        Double priceExpected = 4.0;
         			
         assertEquals(priceExpected, totalPrice, 0.0001);
 	}

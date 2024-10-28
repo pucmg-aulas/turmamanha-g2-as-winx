@@ -52,10 +52,12 @@ public class Main {
 		Vehicle onix = new Vehicle("123", "onix");
 		Vehicle voyage = new Vehicle("124", "voyage");
 		Vehicle corolla = new Vehicle("125", "corolla");
+		Vehicle bmw = new Vehicle("000", "bmw");
 
 		c1.addVehicle(onix);
 		c1.addVehicle(voyage);
 		c2.addVehicle(corolla);
+		c3.addVehicle(bmw);
 
 		park.occupySpot(3, 3, 6, "123");
 		park.occupySpot(0, 1, 6, "124");
