@@ -1,4 +1,4 @@
-package entities;
+package model;
 
 public class Vehicle{
 	private String plate;

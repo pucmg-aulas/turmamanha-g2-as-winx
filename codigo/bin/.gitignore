@@ -1,2 +1,6 @@
-/test/
+/model/
+/view/
+/controller/
 /entities/
+/main/
+/test/

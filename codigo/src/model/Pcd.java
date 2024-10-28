@@ -1,4 +1,4 @@
-package entities;
+package model;
 
 public class Pcd extends CarSpace {
     private static final double DISCOUNT = 0.13;

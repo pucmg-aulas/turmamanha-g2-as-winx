@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-import entities.RentalOfCarSpace;
+import model.RentalOfCarSpace;
 
 class RentalOfCarSpaceTest {
 
