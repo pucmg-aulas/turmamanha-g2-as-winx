@@ -41,6 +41,9 @@ public class Client {
             }
         }
     }
+public  RentalOfCarSpace getRentalOfCarSpace(){
+    return getRentalOfCarSpace();
+}
     
     @Override
     public boolean equals(Object obj) {
