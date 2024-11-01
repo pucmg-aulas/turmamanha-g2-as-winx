@@ -8,7 +8,7 @@ public class Client {
     private int id;
     private String name;
     private List<Vehicle> vehicles;
-
+   
     public Client(int id, String name) {
         this.id = id;
         this.name = name;
@@ -41,9 +41,7 @@ public class Client {
             }
         }
     }
-public  RentalOfCarSpace getRentalOfCarSpace(){
-    return getRentalOfCarSpace();
-}
+
     
     @Override
     public boolean equals(Object obj) {

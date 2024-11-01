@@ -6,12 +6,14 @@ import java.awt.EventQueue;
 import model.Client;
 import model.Park;
 import model.Vehicle;
+import model.RecordFile;
 import view.AddClientView;
 import view.AddVehicleView;
 import view.ParkingSpotsView;
 import controller.AddClientController;
 import controller.AddVehicleController;
 import controller.ParkingSpotsController;
+
 
 public class Main {
 
@@ -71,7 +73,7 @@ public class Main {
 		do {
 			System.out.println("WELCOME TO WINX PARKING!\nPLEASE SELECT AN OPTION");
 			System.out.println(
-					"0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles");
+					"0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles\n7 - Record File ");
 			option = sc.nextInt();
 
 			switch (option) {
@@ -138,9 +140,17 @@ public class Main {
 			case 6:
 				park.listClientsAndVehicles();
 				break;
-			default:
+			case 7:
+			RecordFile recordFile = new RecordFile();
+                recordFile.salvaDados(park.getClients());
+                System.out.println("Client data saved successfully.");
+                break;
+           
+            default:
+                System.out.println("Invalid option. Please try again.");
+                break;
 
-				break;
+			
 			}
 		} while (option != 0);
 	}

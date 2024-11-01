@@ -1,0 +1,26 @@
+Nome: Alice
+ID: 6
+Veículo: model.Vehicle@2e5d6d97
+Veículo: model.Vehicle@238e0d81
+Nenhum aluguel ativo.
+
+Nome: Bob
+ID: 7
+Veículo: model.Vehicle@31221be2
+Nenhum aluguel ativo.
+
+Nome: Christian
+ID: 8
+Veículo: model.Vehicle@377dca04
+Nenhum aluguel ativo.
+
+Nome: Maria
+ID: 9
+Nenhum veículo registrado.
+Nenhum aluguel ativo.
+
+Nome: Maria
+ID: 0
+Veículo: model.Vehicle@728938a9
+Nenhum aluguel ativo.
+

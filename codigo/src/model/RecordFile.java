@@ -1,11 +1,11 @@
-
 package model;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class RecordFile {
+public class RecordFile { 
 
     public void salvaDados(List<Client> listaClientes) {
         try (BufferedWriter saida = new BufferedWriter(new FileWriter("RecordFile.txt"))) {
@@ -28,17 +28,10 @@ public class RecordFile {
                     saida.newLine();
                 }
 
-                // Salvando informações de RentalOfCarSpace, se aplicável
-                RentalOfCarSpace rental = client.getRentalOfCarSpace();
-                if (rental != null) {
-                    saida.write("Aluguel ID: " + rental.getRentalId());
-                    saida.newLine();
-                    saida.write("Veículo do aluguel: " + rental.getVehicle().toString()); // Assuming toString() provides vehicle details
-                    saida.newLine();
-                } else {
-                    saida.write("Nenhum aluguel ativo.");
-                    saida.newLine();
-                }
+                // Removing the RentalOfCarSpace information
+                // If you want to keep this section but just without RentalOfCarSpace, it can be left empty.
+                saida.write("Nenhum aluguel ativo.");
+                saida.newLine();
 
                 saida.newLine(); // Add an extra line for better readability between clients
             }
