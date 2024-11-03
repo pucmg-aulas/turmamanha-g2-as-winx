@@ -1,12 +1,19 @@
 package dao;
 
-import model.Park;
-import model.Vehicle;
-import model.Client;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Client;
+import model.Park;
+import model.Vehicle;
 
 public class ParkDao {
 
@@ -14,50 +21,93 @@ public class ParkDao {
 
     public void savePark(Park park) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            writer.write(String.valueOf(park.getClients().size()));
-            writer.newLine();
-            
             for (Client client : park.getClients()) {
-                writer.write(client.getId() + "," + client.getName());
-                writer.newLine();
-                for (Vehicle vehicle : client.getVehicles()) {
-                    writer.write(vehicle.getPlate() + "," + vehicle.getModel());
-                    writer.newLine();
+                writer.write("Client: " + client.getName() + " (ID: " + client.getId() + ")\n");
+
+                List<String> writtenPlates = new ArrayList<>(); 
+
+                for (int i = 0; i < park.getRows(); i++) {
+                    for (int j = 0; j < park.getColumns(); j++) {
+                        if (park.getParkingSpaces()[i][j]) {
+                            LocalDateTime startTime = park.getParkingStartTimes()[i][j];
+
+                            if (startTime != null) {
+                                for (Vehicle vehicle : client.getVehicles()) {
+                                   
+                                    if (vehicle.getPlate().equalsIgnoreCase(vehicle.getPlate()) && !writtenPlates.contains(vehicle.getPlate())) {
+                                        String formattedDate = startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                                        writer.write("  Vehicle: " + vehicle.getPlate() + " (Model: " + vehicle.getModel() +
+                                                ") - Spot: " + i + ", " + j + " - Occupied on: " + formattedDate + "\n");
+                                        
+                                        writtenPlates.add(vehicle.getPlate());
+                                        break; 
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                writer.newLine();
             }
-            System.out.println("Clients saved to " + FILE_NAME);
+            System.out.println("Parking data saved successfully to " + FILE_NAME);
         } catch (IOException e) {
-            System.err.println("Error saving clients: " + e.getMessage());
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 
-    public Park loadPark() {
-        Park park = new Park();
+    public void loadPark(Park park) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
-            int numberOfClients = Integer.parseInt(reader.readLine());
+            Client currentClient = null;
+            Vehicle currentVehicle = null;
+            List<Vehicle> vehicles = new ArrayList<>();
 
-            for (int i = 0; i < numberOfClients; i++) {
-                line = reader.readLine();
-                String[] clientData = line.split(",");
-                int clientId = Integer.parseInt(clientData[0]);
-                String clientName = clientData[1];
-                Client client = new Client(clientId, clientName);
-                
-                while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                    String[] vehicleData = line.split(",");
-                    String plate = vehicleData[0];
-                    String model = vehicleData[1];
-                    client.addVehicle(new Vehicle(plate, model));
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Client:")) {
+                    String clientInfo = line.substring(8); 
+                    String[] parts = clientInfo.split(" \\(ID: "); 
+                    String clientName = parts[0];
+                    int clientId = Integer.parseInt(parts[1].replace(")", "")); 
+
+                    currentClient = park.findClientById(clientId);
+                    if (currentClient == null) {
+                        currentClient = new Client(clientId, clientName);
+                        park.addClient(currentClient);
+                    }
+                } else if (line.startsWith("  Vehicle:")) {
+                    
+                    if (currentClient == null) {
+                        System.out.println("Vehicle found before a client: " + line);
+                        continue; 
+                    }
+
+                    String vehicleInfo = line.substring(11);
+                    String[] vehicleParts = vehicleInfo.split(" \\(Model: |\\) - Spot: | - Occupied on: ");
+                    String plate = vehicleParts[0];
+                    String model = vehicleParts[1];
+                    String[] positionParts = vehicleParts[2].split(", ");
+                    
+                    currentVehicle = new Vehicle(plate, model);
+                    currentClient.addVehicle(currentVehicle);
+                    
+                    int row = Integer.parseInt(positionParts[0]);
+                    int column = Integer.parseInt(positionParts[1]);
+                    String dateTimeString = vehicleParts[3]; 
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    LocalDateTime startTime = LocalDateTime.parse(dateTimeString, formatter);
+                    if (!park.occupySpot(row, column, currentClient.getId(), plate, startTime.getYear(),
+                            startTime.getMonthValue(), startTime.getDayOfMonth(),
+                            startTime.getHour(), startTime.getMinute())) {
+                        System.out.println("Failed to occupy the spot for vehicle " + plate);
+                    }
                 }
-                
-                park.addClient(client);
             }
-            System.out.println("Clients loaded from " + FILE_NAME);
         } catch (IOException e) {
-            System.err.println("Error loading clients: " + e.getMessage());
+            System.err.println("Error reading the file: " + e.getMessage());
+        } catch (DateTimeParseException e) {
+            System.err.println("Error parsing date and time: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
         }
-        return park;
     }
 }

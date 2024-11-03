@@ -40,14 +40,23 @@ public class ClientDao {
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts[0].equals("END")) {
+
+                
+                if (parts.length >= 2 && !parts[0].equals("END") && !parts[0].equals("V")) {
+                    int clientId = Integer.parseInt(parts[0].trim());
+                    String clientName = parts[1].trim();
+                    client = new Client(clientId, clientName); 
                     clients.add(client);
+                } 
+                else if (parts.length == 3 && parts[0].equals("V") && client != null) {
+                    String vehiclePlate = parts[1].trim();
+                    String vehicleModel = parts[2].trim();
+                    Vehicle vehicle = new Vehicle(vehiclePlate, vehicleModel); 
+                    client.addVehicle(vehicle); 
+                }
+              
+                else if (parts.length == 1 && parts[0].equals("END")) {
                     client = null;
-                } else if (parts[0].equals("V") && client != null) {
-                    Vehicle vehicle = new Vehicle(parts[1], parts[2]);
-                    client.getVehicles().add(vehicle);
-                } else {
-                    client = new Client(Integer.parseInt(parts[0]), parts[1]);
                 }
             }
         } catch (IOException e) {

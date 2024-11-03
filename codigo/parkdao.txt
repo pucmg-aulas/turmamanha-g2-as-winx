@@ -1,13 +1,8 @@
-4
-6,Alice
-123,onix
-124,voyage
-
-7,Bob
-125,corolla
-
-8,Christian
-000,bmw
-
-9,Maria
-
+Client: Alice (ID: 6)
+  Vehicle: 123 (Model: Onix) - Spot: 0, 0 - Occupied on: 03/11/2024 13:30
+  Vehicle: 124 (Model: Voyage) - Spot: 0, 1 - Occupied on: 03/11/2024 13:30
+Client: Bob (ID: 7)
+  Vehicle: 125 (Model: Corolla) - Spot: 0, 2 - Occupied on: 03/11/2024 13:30
+Client: Christian (ID: 8)
+  Vehicle: 000 (Model: BMW) - Spot: 0, 3 - Occupied on: 03/11/2024 13:30
+Client: Maria (ID: 9)

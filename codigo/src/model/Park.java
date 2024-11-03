@@ -162,4 +162,18 @@ public class Park {
 	public int getColumns() {
 		return columns;
 	}
+
+	public LocalDateTime[][] getParkingStartTimes() {
+		return parkingStartTimes;
+	}
+
+	public void setParkingStartTimes(LocalDateTime[][] parkingStartTimes) {
+		this.parkingStartTimes = parkingStartTimes;
+	}
+	
+	public void setClients(List<Client> clients) {
+	    this.clients = clients;
+	}
+	
+	
 }
