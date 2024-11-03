@@ -23,6 +23,7 @@ public class ParkingSpotsView extends JFrame {
 	private JTextField textFieldHour;
 	private JTextField textFieldMinute;
 	private JButton btnOccupy;
+	private JButton btnFree;
 	private JTable clientTable;
 	private DefaultTableModel tableModel;
 	private int selectedRow = -1;
@@ -81,23 +82,23 @@ public class ParkingSpotsView extends JFrame {
 		controlPanel.add(new JLabel("Vehicle Plate:"));
 		textFieldLicensePlate = new JTextField();
 		controlPanel.add(textFieldLicensePlate);
-		
+
 		controlPanel.add(new JLabel("YEAR:"));
 		textFieldYear = new JTextField();
 		controlPanel.add(textFieldYear);
-		
+
 		controlPanel.add(new JLabel("MONTH:"));
 		textFieldMonth = new JTextField();
 		controlPanel.add(textFieldMonth);
-		
+
 		controlPanel.add(new JLabel("DAY:"));
 		textFieldDay = new JTextField();
 		controlPanel.add(textFieldDay);
-		
+
 		controlPanel.add(new JLabel("HOUR:"));
 		textFieldHour = new JTextField();
 		controlPanel.add(textFieldHour);
-		
+
 		controlPanel.add(new JLabel("MINUTE:"));
 		textFieldMinute = new JTextField();
 		controlPanel.add(textFieldMinute);
@@ -107,6 +108,12 @@ public class ParkingSpotsView extends JFrame {
 		btnOccupy.setBackground(new Color(0, 206, 209));
 		btnOccupy.setEnabled(false);
 		controlPanel.add(btnOccupy);
+
+		btnFree = new JButton("Free selected spot");
+		btnFree.setForeground(Color.WHITE);
+		btnFree.setBackground(Color.RED);
+		btnFree.setEnabled(false);
+		controlPanel.add(btnFree);
 
 		rightPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -153,19 +160,24 @@ public class ParkingSpotsView extends JFrame {
 		btnOccupy.addActionListener(listener);
 	}
 
+	public void addFreeButtonListener(ActionListener listener) {
+		btnFree.addActionListener(listener);
+	}
+
 	public void setSelectedSpot(int row, int col) {
 		if (selectedRow >= 0 && selectedColumn >= 0) {
-			if (!spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {
-				spotLabels[selectedRow][selectedColumn].setBackground(Color.WHITE);
+			if (spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {
+				spotLabels[selectedRow][selectedColumn].setBackground(Color.RED);
+			} else {
+				spotLabels[selectedRow][selectedColumn].setBackground(Color.GREEN); 
 			}
 		}
 
 		selectedRow = row;
 		selectedColumn = col;
-		if (!spotLabels[row][col].getText().equals("[X]")) {
-			spotLabels[row][col].setBackground(Color.YELLOW);
-			btnOccupy.setEnabled(true);
-		}
+		spotLabels[row][col].setBackground(Color.YELLOW); 
+		btnFree.setEnabled(spotLabels[row][col].getText().equals("[X]"));
+		btnOccupy.setEnabled(spotLabels[row][col].getText().equals("[ ]"));
 	}
 
 	public String getClientId() {
@@ -175,30 +187,41 @@ public class ParkingSpotsView extends JFrame {
 	public String getLicensePlate() {
 		return textFieldLicensePlate.getText();
 	}
-	
+
 	public String getYear() {
 		return textFieldYear.getText();
 	}
+
 	public String getMonth() {
 		return textFieldMonth.getText();
 	}
-	
+
 	public String getDay() {
 		return textFieldDay.getText();
 	}
+
 	public String getHour() {
 		return textFieldHour.getText();
 	}
-	
+
 	public String getMinute() {
 		return textFieldMinute.getText();
 	}
+
 	public int getSelectedRow() {
 		return selectedRow;
 	}
 
 	public int getSelectedColumn() {
 		return selectedColumn;
+	}
+
+	public JButton getFreeButton() {
+		return btnFree;
+	}
+
+	public JButton getOccupyButton() {
+		return btnOccupy;
 	}
 
 	public void updateParkingSpots(boolean[][] parkingSpaces) {
@@ -229,7 +252,7 @@ public class ParkingSpotsView extends JFrame {
 		textFieldDay.setText("");
 		textFieldHour.setText("");
 		textFieldMinute.setText("");
-		
+
 		btnOccupy.setEnabled(false);
 		if (selectedRow >= 0 && selectedColumn >= 0) {
 			if (!spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {

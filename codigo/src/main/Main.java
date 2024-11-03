@@ -20,7 +20,6 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		Park park = new Park(5, 5);
 
-		// Adicionando clientes e veículos de teste
 		initializeTestData(park);
 
 		System.out.println("Choose interface type:");
@@ -39,7 +38,6 @@ public class Main {
 	}
 
 	private static void initializeTestData(Park park) {
-		// Seus dados de teste
 		
 		List<Client> clients = new ArrayList<>();
 		List<Vehicle> vehicles = new ArrayList<>();	

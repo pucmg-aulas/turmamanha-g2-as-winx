@@ -18,6 +18,7 @@ public class Park {
 	public Park() {
 		this.clients = new ArrayList<>();
 		this.parkingSpaces = new boolean[8][8];
+		this.rentalOfCarSpace = new RentalOfCarSpace();
 	}
 
 	public Park(int rows, int columns) {
@@ -26,6 +27,7 @@ public class Park {
 		this.parkingSpaces = new boolean[rows][columns];
 		this.clients = new ArrayList<>();
 		parkingStartTimes = new LocalDateTime[rows][columns];
+		this.rentalOfCarSpace = new RentalOfCarSpace();
 	}
 
 	public int getNumberParkingSpaces() {
@@ -75,7 +77,7 @@ public class Park {
 		LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 		if (parkingSpaces[row][column]) {
 			parkingSpaces[row][column] = false;
-			System.out.println("Spot successfully freed." + rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
+			System.out.println("Spot successfully freed.\n" + "Total price: "+ rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + "\nTotal Time: " +  rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
 			return true;
 		} else {
 			System.out.println("The spot is already free!");

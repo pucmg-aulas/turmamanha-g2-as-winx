@@ -10,6 +10,8 @@ public class RentalOfCarSpace {
     private Vehicle vehicle;
     private int rentalId;
 
+    public RentalOfCarSpace() {
+    }
     public RentalOfCarSpace(CarSpace carSpace, LocalDateTime startRental, LocalDateTime endRental, Vehicle vehicle,
             int rentalId) {
         this.carSpace = carSpace;

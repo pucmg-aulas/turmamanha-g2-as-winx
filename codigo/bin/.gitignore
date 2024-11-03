@@ -1,5 +1,7 @@
-/view/
-/main/
 /controller/
 /dao/
+/entities/
+/main/
 /model/
+/test/
+/view/

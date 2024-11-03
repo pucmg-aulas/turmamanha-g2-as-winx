@@ -19,6 +19,9 @@ public class RentalOfCarSpace {
 		this.rentalId = rentalId;
 	}
 
+	public RentalOfCarSpace() {
+	}
+
 	public CarSpace getCarSpace() {
 		return carSpace;
 	}
