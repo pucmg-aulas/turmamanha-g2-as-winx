@@ -12,6 +12,8 @@ public class Park {
 	private int rows;
 	private int columns;
 	private List<Client> clients;
+	private LocalDateTime[][] parkingStartTimes;
+	private RentalOfCarSpace rentalOfCarSpace;
 
 	public Park() {
 		this.clients = new ArrayList<>();
@@ -23,6 +25,7 @@ public class Park {
 		this.columns = columns;
 		this.parkingSpaces = new boolean[rows][columns];
 		this.clients = new ArrayList<>();
+		parkingStartTimes = new LocalDateTime[rows][columns];
 	}
 
 	public int getNumberParkingSpaces() {
@@ -33,7 +36,7 @@ public class Park {
 		this.numberParkingSpaces = numberParkingSpaces;
 	}
 
-	public boolean occupySpot(int row, int column, int clientId, String licensePlate) {
+	public boolean occupySpot(int row, int column, int clientId, String licensePlate, int year, int month, int day, int hour, int minute) {
 		if (parkingSpaces[row][column]) {
 			System.out.println("Spot is already occupied!");
 			return false;
@@ -58,18 +61,21 @@ public class Park {
 			return false;
 		}
 
-		LocalDateTime parkingTime = LocalDateTime.now();
-		parkingSpaces[row][column] = true; // Atualiza a matriz
+		LocalDateTime startParkingTime = LocalDateTime.of(year, month, day, hour, minute);
+		parkingStartTimes[row][column] = startParkingTime;
+		parkingSpaces[row][column] = true; 
 		System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel() + " (Plate: "
-				+ selectedVehicle.getPlate() + ")" + " at " + parkingTime);
+				+ selectedVehicle.getPlate() + ")" + " at " + startParkingTime);
 
 		return true;
 	}
 
-	public boolean freeSpot(int row, int column) {
+	public boolean freeSpot(int row, int column, int year, int month, int day, int hour, int minute) {
+		LocalDateTime startParkingTime = parkingStartTimes[row][column];
+		LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 		if (parkingSpaces[row][column]) {
 			parkingSpaces[row][column] = false;
-			System.out.println("Spot successfully freed.");
+			System.out.println("Spot successfully freed." + rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
 			return true;
 		} else {
 			System.out.println("The spot is already free!");

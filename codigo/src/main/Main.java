@@ -1,19 +1,18 @@
 package main;
 
-import java.util.Scanner;
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+import controller.ParkingSpotsController;
+import dao.ClientDao;
+import dao.ParkDao;
+import dao.VehicleDao;
 import model.Client;
 import model.Park;
 import model.Vehicle;
-import model.RecordFile;
-import view.AddClientView;
-import view.AddVehicleView;
 import view.ParkingSpotsView;
-import controller.AddClientController;
-import controller.AddVehicleController;
-import controller.ParkingSpotsController;
-
 
 public class Main {
 
@@ -41,11 +40,15 @@ public class Main {
 
 	private static void initializeTestData(Park park) {
 		// Seus dados de teste
+		
+		List<Client> clients = new ArrayList<>();
+		List<Vehicle> vehicles = new ArrayList<>();	
+		
 		Client c1 = new Client(6, "Alice");
 		Client c2 = new Client(7, "Bob");
 		Client c3 = new Client(8, "Christian");
 		Client c4 = new Client(9, "Maria");
-
+		
 		park.addClient(c1);
 		park.addClient(c2);
 		park.addClient(c3);
@@ -61,19 +64,36 @@ public class Main {
 		c2.addVehicle(corolla);
 		c3.addVehicle(bmw);
 
-		park.occupySpot(3, 3, 6, "123");
-		park.occupySpot(0, 1, 6, "124");
-		park.occupySpot(0, 0, 7, "125");
+		park.occupySpot(3, 3, 6, "123", 2024, 11, 3, 13, 30);
+		park.occupySpot(0, 1, 6, "124", 2024, 11, 3, 13, 30);
+		park.occupySpot(0, 0, 7, "125", 2024, 11, 3, 13, 30);
+		
+		ParkDao parkDao = new ParkDao();
+		ClientDao clientDao = new ClientDao();
+		VehicleDao vehicleDao = new VehicleDao();
+		
+		clients.add(c1);
+		clients.add(c2);
+		clients.add(c3);
+		clients.add(c4);
+		
+		vehicles.add(onix);
+		vehicles.add(voyage);
+		vehicles.add(corolla);
+		vehicles.add(bmw);
+		
+		clientDao.saveClients(clients);
+		parkDao.savePark(park);
+		vehicleDao.saveAllVehicles(vehicles);
 	}
 
 	private static void runConsoleInterface(Scanner sc, Park park) {
 		int option;
-		int clientId = 0;
 
 		do {
 			System.out.println("WELCOME TO WINX PARKING!\nPLEASE SELECT AN OPTION");
 			System.out.println(
-					"0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles\n7 - Record File ");
+					"0 - Leave\n1 - Register Client\n2 - Register Client Vehicle\n3 - See parking spots\n4 - Ocuppy Spot\n5 - Free Spot\n6 - List clients and vehicles");
 			option = sc.nextInt();
 
 			switch (option) {
@@ -107,50 +127,80 @@ public class Main {
 				sc.nextLine();
 				break;
 			case 4:
-				System.out.println("What spot do you want to occupy?");
-				System.out.print("Enter row: ");
-				int row = sc.nextInt();
-				System.out.print("Enter column: ");
-				int column = sc.nextInt();
-				sc.nextLine();
+			    System.out.println("What spot do you want to occupy?");
+			    System.out.print("Enter row: ");
+			    int row = sc.nextInt();
+			    System.out.print("Enter column: ");
+			    int column = sc.nextInt();
+			    sc.nextLine();
 
-				System.out.print("Enter the client ID: ");
-				int idClient = sc.nextInt();
-				sc.nextLine();
+			    System.out.print("Enter the client ID: ");
+			    int idClient = sc.nextInt();
+			    sc.nextLine();
 
-				System.out.print("Enter the vehicle license plate: ");
-				String licensePlate = sc.nextLine();
+			    System.out.print("Enter the vehicle license plate: ");
+			    String licensePlate = sc.nextLine();
 
-				boolean success = park.occupySpot(row, column, idClient, licensePlate);
+			    System.out.print("Enter the year: ");
+			    int year = sc.nextInt();
+			    System.out.print("Enter the month: ");
+			    int month = sc.nextInt();
+			    System.out.print("Enter the day: ");
+			    int day = sc.nextInt();
+			    
+			    System.out.print("Enter the hour: ");
+			    int hours = sc.nextInt();
+			    System.out.print("Enter the minutes: ");
+			    int minutes = sc.nextInt();
+			    sc.nextLine();
 
-				if (success) {
-					System.out.println("Vehicle parked successfully.");
-				} else {
-					System.out.println("Failed to park the vehicle.");
-				}
+			    boolean success = park.occupySpot(row, column, idClient, licensePlate, year, month, day, hours, minutes);
 
-				break;
+			    if (success) {
+			        System.out.println("Vehicle parked successfully.");
+			    } else {
+			        System.out.println("Failed to park the vehicle.");
+			    }
+
+			    break;
+
 			case 5:
-				System.out.println("What spot do you want to free?");
-				row = sc.nextInt();
-				column = sc.nextInt();
-				sc.nextLine();
-				park.freeSpot(row, column);
-				break;
+			    System.out.println("What spot do you want to free?");
+			    System.out.print("Enter row: ");
+			    row = sc.nextInt();
+			    System.out.print("Enter column: ");
+			    column = sc.nextInt();
+			    sc.nextLine();
+			    System.out.print("Enter the year: ");
+			    int yearF = sc.nextInt();
+			    System.out.print("Enter the month: ");
+			    int monthF = sc.nextInt();
+			    System.out.print("Enter the day: ");
+			    int dayF = sc.nextInt();
+			    
+			    System.out.print("Enter the hour: ");
+			    int hoursF = sc.nextInt();
+			    System.out.print("Enter the minutes: ");
+			    int minutesF = sc.nextInt();
+			    sc.nextLine();
+
+			    boolean successF = park.freeSpot(row, column, yearF, monthF, dayF, hoursF, minutesF);
+
+			    if (successF) {
+			        System.out.println("Vehicle parked successfully.");
+			    } else {
+			        System.out.println("Failed to park the vehicle.");
+			    }
+			    
+			    park.freeSpot(row, column, yearF, monthF, dayF, hoursF, minutesF);
+			    System.out.println("Spot freed successfully.");
+			    break;
 			case 6:
 				park.listClientsAndVehicles();
 				break;
-			case 7:
-			RecordFile recordFile = new RecordFile();
-                recordFile.salvaDados(park.getClients());
-                System.out.println("Client data saved successfully.");
-                break;
-           
-            default:
-                System.out.println("Invalid option. Please try again.");
-                break;
+			default:
 
-			
+				break;
 			}
 		} while (option != 0);
 	}
@@ -158,13 +208,14 @@ public class Main {
 	private static void runGraphicalInterface(Park park) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				/*
+				
 				ParkingSpotsView view = new ParkingSpotsView(park.getRows(), park.getColumns());
 				ParkingSpotsController controller = new ParkingSpotsController(view, park);
-				*/
-
+				
+				/*
 				AddClientView view = new AddClientView();
 				AddClientController controller = new AddClientController(view, park);
+				*/
 				/*
 				AddVehicleView view = new AddVehicleView();
 				AddVehicleController controller = new AddVehicleController(view, park);

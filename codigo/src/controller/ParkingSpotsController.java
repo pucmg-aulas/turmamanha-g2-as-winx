@@ -47,30 +47,47 @@ public class ParkingSpotsController {
 	}
 
 	private void occupySelectedSpot() {
-		String clientIdStr = view.getClientId();
-		String licensePlate = view.getLicensePlate();
-		int row = view.getSelectedRow();
-		int col = view.getSelectedColumn();
+	    String clientIdStr = view.getClientId();
+	    String licensePlate = view.getLicensePlate();
+	    String yearStr = view.getYear(); 
+	    String monthStr = view.getMonth(); 
+	    String dayStr = view.getDay(); 
+	    String hours = view.getHour();
+	    String minutes = view.getMinute();
+	    
+	    int row = view.getSelectedRow();
+	    int col = view.getSelectedColumn();
 
-		if (clientIdStr.isEmpty() || licensePlate.isEmpty()) {
-			view.showErrorMessage("Please fill all fields!");
-			return;
-		}
+	    if (clientIdStr.isEmpty() || licensePlate.isEmpty() || yearStr.isEmpty() || monthStr.isEmpty() || dayStr.isEmpty()) {
+	        view.showErrorMessage("Please fill all fields!");
+	        return;
+	    }
 
-		if (!isNumeric(clientIdStr)) {
-			view.showErrorMessage("Client ID must be a number!");
-			return;
-		}
+	    if (!isNumeric(clientIdStr)) {
+	        view.showErrorMessage("Client ID must be a number!");
+	        return;
+	    }
 
-		int clientId = Integer.parseInt(clientIdStr);
+	    int clientId = Integer.parseInt(clientIdStr);
+	    
+	    if (!isNumeric(yearStr) || !isNumeric(monthStr) || !isNumeric(dayStr) || !isNumeric(hours) || !isNumeric(minutes)) {
+	        view.showErrorMessage("Year, Month, Day, Hour, and Minute must be numbers!");
+	        return;
+	    }
 
-		boolean success = park.occupySpot(row, col, clientId, licensePlate);
-		if (success) {
-			updateParkingView();
-			view.updateClientTable(park.getClients());
-			view.clearFields();
-			view.showSuccessMessage("Spot successfully occupied!");
-		}
+	    int clientYear = Integer.parseInt(yearStr);
+	    int clientMonth = Integer.parseInt(monthStr);
+	    int clientDay = Integer.parseInt(dayStr);
+	    int clientHour = Integer.parseInt(hours);
+	    int clientMinute = Integer.parseInt(minutes);
+
+	    boolean success = park.occupySpot(row, col, clientId, licensePlate, clientYear, clientMonth, clientDay, clientHour, clientMinute);
+	    if (success) {
+	        updateParkingView();
+	        view.updateClientTable(park.getClients());
+	        view.clearFields();
+	        view.showSuccessMessage("Spot successfully occupied!");
+	    }
 	}
 
 	private void updateParkingView() {

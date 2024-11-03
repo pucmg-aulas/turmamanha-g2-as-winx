@@ -1,0 +1,12 @@
+6,Alice
+V,123,onix
+V,124,voyage
+END
+7,Bob
+V,125,corolla
+END
+8,Christian
+V,000,bmw
+END
+9,Maria
+END

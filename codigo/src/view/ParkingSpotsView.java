@@ -17,6 +17,11 @@ public class ParkingSpotsView extends JFrame {
 	private JLabel[][] spotLabels;
 	private JTextField textFieldClientId;
 	private JTextField textFieldLicensePlate;
+	private JTextField textFieldYear;
+	private JTextField textFieldMonth;
+	private JTextField textFieldDay;
+	private JTextField textFieldHour;
+	private JTextField textFieldMinute;
 	private JButton btnOccupy;
 	private JTable clientTable;
 	private DefaultTableModel tableModel;
@@ -66,7 +71,7 @@ public class ParkingSpotsView extends JFrame {
 		JPanel rightPanel = new JPanel(new BorderLayout());
 
 		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout(new GridLayout(3, 2, 5, 5));
+		controlPanel.setLayout(new GridLayout(8, 5, 5, 5));
 		controlPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		controlPanel.add(new JLabel("Client ID:"));
@@ -76,6 +81,26 @@ public class ParkingSpotsView extends JFrame {
 		controlPanel.add(new JLabel("Vehicle Plate:"));
 		textFieldLicensePlate = new JTextField();
 		controlPanel.add(textFieldLicensePlate);
+		
+		controlPanel.add(new JLabel("YEAR:"));
+		textFieldYear = new JTextField();
+		controlPanel.add(textFieldYear);
+		
+		controlPanel.add(new JLabel("MONTH:"));
+		textFieldMonth = new JTextField();
+		controlPanel.add(textFieldMonth);
+		
+		controlPanel.add(new JLabel("DAY:"));
+		textFieldDay = new JTextField();
+		controlPanel.add(textFieldDay);
+		
+		controlPanel.add(new JLabel("HOUR:"));
+		textFieldHour = new JTextField();
+		controlPanel.add(textFieldHour);
+		
+		controlPanel.add(new JLabel("MINUTE:"));
+		textFieldMinute = new JTextField();
+		controlPanel.add(textFieldMinute);
 
 		btnOccupy = new JButton("Occupy selected spot");
 		btnOccupy.setForeground(new Color(240, 255, 255));
@@ -150,7 +175,24 @@ public class ParkingSpotsView extends JFrame {
 	public String getLicensePlate() {
 		return textFieldLicensePlate.getText();
 	}
-
+	
+	public String getYear() {
+		return textFieldYear.getText();
+	}
+	public String getMonth() {
+		return textFieldMonth.getText();
+	}
+	
+	public String getDay() {
+		return textFieldDay.getText();
+	}
+	public String getHour() {
+		return textFieldHour.getText();
+	}
+	
+	public String getMinute() {
+		return textFieldMinute.getText();
+	}
 	public int getSelectedRow() {
 		return selectedRow;
 	}
@@ -182,6 +224,12 @@ public class ParkingSpotsView extends JFrame {
 	public void clearFields() {
 		textFieldClientId.setText("");
 		textFieldLicensePlate.setText("");
+		textFieldYear.setText("");
+		textFieldMonth.setText("");
+		textFieldDay.setText("");
+		textFieldHour.setText("");
+		textFieldMinute.setText("");
+		
 		btnOccupy.setEnabled(false);
 		if (selectedRow >= 0 && selectedColumn >= 0) {
 			if (!spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {
