@@ -21,10 +21,12 @@ public class ParkDao {
 
     public void savePark(Park park) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            writer.write("Rows: " + park.getRows() + ", Columns: " + park.getColumns() + "\n");
+
             for (Client client : park.getClients()) {
                 writer.write("Client: " + client.getName() + " (ID: " + client.getId() + ")\n");
 
-                List<String> writtenPlates = new ArrayList<>(); 
+                List<String> writtenPlates = new ArrayList<>();
 
                 for (int i = 0; i < park.getRows(); i++) {
                     for (int j = 0; j < park.getColumns(); j++) {
@@ -33,14 +35,17 @@ public class ParkDao {
 
                             if (startTime != null) {
                                 for (Vehicle vehicle : client.getVehicles()) {
-                                   
-                                    if (vehicle.getPlate().equalsIgnoreCase(vehicle.getPlate()) && !writtenPlates.contains(vehicle.getPlate())) {
-                                        String formattedDate = startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                                        writer.write("  Vehicle: " + vehicle.getPlate() + " (Model: " + vehicle.getModel() +
-                                                ") - Spot: " + i + ", " + j + " - Occupied on: " + formattedDate + "\n");
-                                        
-                                        writtenPlates.add(vehicle.getPlate());
-                                        break; 
+                                    if (vehicle.getPlate().equalsIgnoreCase(vehicle.getPlate()) && 
+                                        !writtenPlates.contains(vehicle.getPlate())) {
+                                            
+                                        if (park.getParkingStartTimes()[i][j] != null) {
+                                            String formattedDate = startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                                            writer.write("  Vehicle: " + vehicle.getPlate() + " (Model: " + vehicle.getModel() +
+                                                    ") - Spot: " + i + ", " + j + " - Occupied on: " + formattedDate + "\n");
+
+                                            writtenPlates.add(vehicle.getPlate());
+                                            break; 
+                                        }
                                     }
                                 }
                             }

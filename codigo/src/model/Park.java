@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import dao.ParkDao;
+
 public class Park {
 
 	private int numberParkingSpaces;
@@ -13,12 +15,15 @@ public class Park {
 	private int columns;
 	private List<Client> clients;
 	private LocalDateTime[][] parkingStartTimes;
+
 	private RentalOfCarSpace rentalOfCarSpace;
+	private ParkDao parkDao;
 
 	public Park() {
 		this.clients = new ArrayList<>();
 		this.parkingSpaces = new boolean[8][8];
 		this.rentalOfCarSpace = new RentalOfCarSpace();
+		this.parkDao = new ParkDao();
 	}
 
 	public Park(int rows, int columns) {
@@ -28,6 +33,7 @@ public class Park {
 		this.clients = new ArrayList<>();
 		parkingStartTimes = new LocalDateTime[rows][columns];
 		this.rentalOfCarSpace = new RentalOfCarSpace();
+		this.parkDao = new ParkDao();
 	}
 
 	public int getNumberParkingSpaces() {
@@ -38,7 +44,8 @@ public class Park {
 		this.numberParkingSpaces = numberParkingSpaces;
 	}
 
-	public boolean occupySpot(int row, int column, int clientId, String licensePlate, int year, int month, int day, int hour, int minute) {
+	public boolean occupySpot(int row, int column, int clientId, String licensePlate, int year, int month, int day,
+			int hour, int minute) {
 		if (parkingSpaces[row][column]) {
 			System.out.println("Spot is already occupied!");
 			return false;
@@ -65,10 +72,10 @@ public class Park {
 
 		LocalDateTime startParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 		parkingStartTimes[row][column] = startParkingTime;
-		parkingSpaces[row][column] = true; 
+		parkingSpaces[row][column] = true;
 		System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel() + " (Plate: "
 				+ selectedVehicle.getPlate() + ")" + " at " + startParkingTime);
-
+		parkDao.savePark(this);
 		return true;
 	}
 
@@ -77,7 +84,10 @@ public class Park {
 		LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 		if (parkingSpaces[row][column]) {
 			parkingSpaces[row][column] = false;
-			System.out.println("Spot successfully freed.\n" + "Total price: "+ rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + "\nTotal Time: " +  rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
+			System.out.println("Spot successfully freed.\n" + "Total price: "
+					+ rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + "\nTotal Time: "
+					+ rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
+
 			return true;
 		} else {
 			System.out.println("The spot is already free!");
@@ -170,10 +180,21 @@ public class Park {
 	public void setParkingStartTimes(LocalDateTime[][] parkingStartTimes) {
 		this.parkingStartTimes = parkingStartTimes;
 	}
-	
+
 	public void setClients(List<Client> clients) {
-	    this.clients = clients;
+		this.clients = clients;
+	}
+
+	public boolean isSpotOccupied(int row, int column) {
+		return getParkingSpaces()[row][column];
 	}
 	
-	
+	public String[][] getParkingVehiclePlates() {
+		return parkingVehiclePlates;
+	}
+
+	public void setParkingVehiclePlates(String[][] parkingVehiclePlates) {
+		this.parkingVehiclePlates = parkingVehiclePlates;
+	}
+
 }
