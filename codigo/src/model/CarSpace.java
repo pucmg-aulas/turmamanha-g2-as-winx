@@ -4,6 +4,7 @@ public class CarSpace {
 
     private String spotId;
     private boolean isOccupied;
+    private double baseValue;
 
     public CarSpace(){
         
@@ -15,6 +16,11 @@ public class CarSpace {
     }
 
  
+    public CarSpace(double baseValue) {
+        this.baseValue = baseValue;
+        this.isOccupied = false;
+    }
+
     public String getSpotId() {
         return spotId;
     }
@@ -49,6 +55,10 @@ public class CarSpace {
         } else {
             System.out.println("Spot is already available.");
         }
+    }
+
+    public double getBaseValue() {
+        return baseValue;
     }
 
 
