@@ -4,15 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Client {
+public  class Client {
     private int id;
     private String name;
     private List<Vehicle> vehicles;
+    private double baseValue;
    
     public Client(int id, String name) {
         this.id = id;
         this.name = name;
         this.vehicles = new ArrayList<>(); 
+    }
+
+    public Client(int id, String name, double baseValue) {
+        this.id = id;
+        this.name = name;
+        this.vehicles = new ArrayList<>();
+        this.baseValue = baseValue;
+    }
+
+    public Client(double baseValue2) {
+        //TODO Auto-generated constructor stub
     }
 
     public int getId() {
@@ -25,6 +37,14 @@ public class Client {
 
     public List<Vehicle> getVehicles() {
         return vehicles;
+    }
+
+    public double getBaseValue() {
+        return baseValue;
+    }
+
+    public void setBaseValue(double baseValue) {
+        this.baseValue = baseValue;
     }
 
     public void addVehicle(Vehicle vehicle) {
@@ -42,7 +62,6 @@ public class Client {
         }
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

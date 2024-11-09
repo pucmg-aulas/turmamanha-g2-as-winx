@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import model.Client;
+import model.ClientVip;
 import model.Vehicle;
 
 class ClientTest {
@@ -15,7 +16,7 @@ class ClientTest {
 	@Test
 	void ClientAddTest() {
 		Client c1 = new Client(1, "Cleber");
-		Client c1Expected = new Client(1, "Cleber");
+		Client c1Expected = new ClientVip(1, "Cleber");
 		
 		assertEquals(c1, c1Expected);
 	}
