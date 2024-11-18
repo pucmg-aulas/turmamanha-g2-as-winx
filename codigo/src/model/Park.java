@@ -15,6 +15,8 @@ public class Park {
 	private int columns;
 	private List<Client> clients;
 	private LocalDateTime[][] parkingStartTimes;
+	private int minSize = 4;
+	private int maxSize = 20;
 
 	private RentalOfCarSpace rentalOfCarSpace;
 	private ParkDao parkDao;
@@ -196,6 +198,10 @@ public class Park {
 	
 		public void setParkingVehiclePlates(String[][] parkingVehiclePlates) {
 			this.parkingVehiclePlates = parkingVehiclePlates;
-	}
+		}
+		
+		public boolean verifySize(int value) {
+			return value > minSize && value < maxSize;
+		}
 
 }

@@ -19,6 +19,7 @@
 	import java.awt.GridBagConstraints;
 	import java.awt.Insets;
 	import java.awt.CardLayout;
+import javax.swing.SwingConstants;
 	
 	public class MainMenuView extends JFrame {
 	
@@ -59,6 +60,7 @@
 			contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 			
 			JLabel lblNewLabel = new JLabel("Welcome to Xulambs Inc. Java Parking!");
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			contentPane.add(lblNewLabel);
 			lblNewLabel.setFont(new Font("Myanmar Text", Font.PLAIN, 22));
 			

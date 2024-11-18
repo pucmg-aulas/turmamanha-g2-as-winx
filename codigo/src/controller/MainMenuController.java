@@ -13,6 +13,7 @@ import model.Vehicle;
 import view.AddClientView;
 import view.AddVehicleView;
 import view.MainMenuView;
+import view.ParkingSizeView;
 import view.ParkingSpotsView;
 
 public class MainMenuController {
@@ -49,7 +50,9 @@ public class MainMenuController {
 	}
 	
 	private void showParkingSizeView() {
-		
+		ParkingSizeView view = new ParkingSizeView();
+		ParkingSizeController controller = new ParkingSizeController(view, park);
+		view.setVisible(true);
 	}
 }
 
