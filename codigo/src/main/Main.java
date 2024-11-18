@@ -45,7 +45,6 @@ public class Main {
 	private static void runGraphicalInterface(Park park) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
 				MainMenuView mainMenu = new MainMenuView(); 
 				MainMenuController controller = new MainMenuController(mainMenu, park); 
 				mainMenu.setVisible(true);

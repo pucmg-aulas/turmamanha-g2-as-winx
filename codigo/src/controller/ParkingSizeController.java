@@ -41,7 +41,8 @@ public class ParkingSizeController {
 	}
 	
 	public void setPark() {
-		Park park = new Park(this.width, this.height);
+		this.park.setRows(this.width);
+	    this.park.setColumns(this.height);
 		ParkDao parkDao = new ParkDao();
 		parkDao.loadPark(park);
 	}
