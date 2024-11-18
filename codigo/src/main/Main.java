@@ -1,6 +1,9 @@
 package main;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +13,8 @@ import controller.ParkingSpotsController;
 import dao.ClientDao;
 import dao.ParkDao;
 import dao.VehicleDao;
+import db.DB;
+import db.DbException;
 import model.Client;
 import model.Park;
 import model.Vehicle;
@@ -24,6 +29,32 @@ public class Main {
 		initializeTestData(park);
 
 		runGraphicalInterface(park);
+		
+		Connection conn = null;
+		Statement st = null;
+		try {
+			conn = DB.getConnection();
+	
+			conn.setAutoCommit(false);
+
+			st = conn.createStatement();
+			System.out.println("Banco de Dados conectado! ");
+			
+		}
+		catch (SQLException e) {
+			try {
+				conn.rollback();
+				throw new DbException("Transaction rolled back! Caused by: " + e.getMessage());
+			} 
+			catch (SQLException e1) {
+				throw new DbException("Error trying to rollback! Caused by: " + e1.getMessage());
+			}
+		} 
+		finally {
+			DB.closeStatement(st);
+			DB.closeConnection();
+		}
+		
 	}
 
 	private static void initializeTestData(Park park) {

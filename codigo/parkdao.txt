@@ -1,11 +1,4 @@
 Rows: 5, Columns: 5
 Client: Alice (ID: 6)
   Vehicle: 123 (Model: Onix) - Spot: 0, 0 - Occupied on: 03/11/2024 13:31
-  Vehicle: 124 (Model: Fusca) - Spot: 1, 0 - Occupied on: 03/11/2024 13:32
-Client: Bob (ID: 7)
-  Vehicle: 125 (Model: Corolla) - Spot: 0, 1 - Occupied on: 03/11/2024 13:33
-Client: Christian (ID: 8)
-  Vehicle: 000 (Model: BMW) - Spot: 0, 2 - Occupied on: 03/11/2024 13:34
-Client: Maria (ID: 9)
-Client: Danilo (ID: 10)
-  Vehicle: 777 (Model: TCROSS) - Spot: 3, 3 - Occupied on: 03/11/2024 13:35 
+  Vehicle: 124 (Model: Fusca) - Spot: 0, 1 - Occupied on: 03/11/2024 13:33
