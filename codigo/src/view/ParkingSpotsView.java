@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import model.Client;
 import model.Vehicle;
+import model.CarSpace;
 
 public class ParkingSpotsView extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -53,8 +54,10 @@ public class ParkingSpotsView extends JFrame {
 
 		spotLabels = new JLabel[rows][columns];
 		for (int i = 0; i < rows; i++) {
+			String rowLetter = String.valueOf((char)('A' + i));
 			for (int j = 0; j < columns; j++) {
-				JLabel spot = new JLabel("[ ]");
+				String spotId = String.format("%s%02d", rowLetter, j + 1);
+				JLabel spot = new JLabel("[" + spotId + "]");
 				spot.setHorizontalAlignment(SwingConstants.CENTER);
 				spot.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				spot.setOpaque(true);
@@ -166,18 +169,20 @@ public class ParkingSpotsView extends JFrame {
 
 	public void setSelectedSpot(int row, int col) {
 		if (selectedRow >= 0 && selectedColumn >= 0) {
-			if (spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {
+			String text = spotLabels[selectedRow][selectedColumn].getText();
+			if (text.contains("*")) {
 				spotLabels[selectedRow][selectedColumn].setBackground(Color.RED);
 			} else {
-				spotLabels[selectedRow][selectedColumn].setBackground(Color.GREEN); 
+				spotLabels[selectedRow][selectedColumn].setBackground(Color.GREEN);
 			}
 		}
 
 		selectedRow = row;
 		selectedColumn = col;
-		spotLabels[row][col].setBackground(Color.YELLOW); 
-		btnFree.setEnabled(spotLabels[row][col].getText().equals("[X]"));
-		btnOccupy.setEnabled(spotLabels[row][col].getText().equals("[ ]"));
+		spotLabels[row][col].setBackground(Color.YELLOW);
+		String text = spotLabels[row][col].getText();
+		btnFree.setEnabled(text.contains("*"));
+		btnOccupy.setEnabled(!text.contains("*"));
 	}
 
 	public String getClientId() {
@@ -224,16 +229,19 @@ public class ParkingSpotsView extends JFrame {
 		return btnOccupy;
 	}
 
-	public void updateParkingSpots(boolean[][] parkingSpaces) {
+	public void updateParkingSpots(CarSpace[][] parkingSpaces) {
 		for (int i = 0; i < parkingSpaces.length; i++) {
 			for (int j = 0; j < parkingSpaces[i].length; j++) {
-				if (parkingSpaces[i][j]) {
-					spotLabels[i][j].setText("[X]");
+				CarSpace spot = parkingSpaces[i][j];
+				String spotId = spot.getSpotId();
+				if (spot.isOccupied()) {
+					spotLabels[i][j].setText("[" + spotId + "*]");
 					spotLabels[i][j].setBackground(Color.RED);
 				} else {
-					spotLabels[i][j].setText("[ ]");
+					spotLabels[i][j].setText("[" + spotId + "]");
 					spotLabels[i][j].setBackground(Color.GREEN);
 				}
+				spotLabels[i][j].setToolTipText("Vaga: " + spotId);
 			}
 		}
 	}
@@ -255,7 +263,7 @@ public class ParkingSpotsView extends JFrame {
 
 		btnOccupy.setEnabled(false);
 		if (selectedRow >= 0 && selectedColumn >= 0) {
-			if (!spotLabels[selectedRow][selectedColumn].getText().equals("[X]")) {
+			if (!spotLabels[selectedRow][selectedColumn].getText().contains("*")) {
 				spotLabels[selectedRow][selectedColumn].setBackground(Color.WHITE);
 			}
 		}

@@ -9,34 +9,41 @@ import dao.ParkDao;
 
 public class Park {
 
-	private int numberParkingSpaces;
-	private boolean parkingSpaces[][];
+	private CarSpace[][] parkingSpaces;
 	private int rows;
 	private int columns;
 	private List<Client> clients;
 	private LocalDateTime[][] parkingStartTimes;
 	private int minSize = 4;
 	private int maxSize = 20;
+	private int numberParkingSpaces;
 
 	private RentalOfCarSpace rentalOfCarSpace;
 	private ParkDao parkDao;
 		private String[][] parkingVehiclePlates;
 	
 		public Park() {
-			this.clients = new ArrayList<>();
-			this.parkingSpaces = new boolean[8][8];
-			this.rentalOfCarSpace = new RentalOfCarSpace();
-			this.parkDao = new ParkDao();
+			this(8, 8);
 		}
 	
 		public Park(int rows, int columns) {
 			this.rows = rows;
 			this.columns = columns;
-			this.parkingSpaces = new boolean[rows][columns];
+			this.parkingSpaces = new CarSpace[rows][columns];
 			this.clients = new ArrayList<>();
-			parkingStartTimes = new LocalDateTime[rows][columns];
+			this.parkingStartTimes = new LocalDateTime[rows][columns];
+			initializeParkingSpaces();
 			this.rentalOfCarSpace = new RentalOfCarSpace();
 			this.parkDao = new ParkDao();
+		}
+	
+		private void initializeParkingSpaces() {
+			for (int i = 0; i < rows; i++) {
+				String rowLetter = String.valueOf((char)('A' + i));
+				for (int j = 0; j < columns; j++) {
+					parkingSpaces[i][j] = new CarSpace(rowLetter, j + 1);
+				}
+			}
 		}
 	
 		public int getNumberParkingSpaces() {
@@ -49,7 +56,7 @@ public class Park {
 	
 		public boolean occupySpot(int row, int column, int clientId, String licensePlate, int year, int month, int day,
 				int hour, int minute) {
-			if (parkingSpaces[row][column]) {
+			if (parkingSpaces[row][column].isOccupied()) {
 				System.out.println("Spot is already occupied!");
 				return false;
 			}
@@ -75,7 +82,7 @@ public class Park {
 	
 			LocalDateTime startParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 			parkingStartTimes[row][column] = startParkingTime;
-			parkingSpaces[row][column] = true;
+			parkingSpaces[row][column].allocateSpot(rentalOfCarSpace);
 			System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel() + " (Plate: "
 					+ selectedVehicle.getPlate() + ")" + " at " + startParkingTime);
 			parkDao.savePark(this);
@@ -85,8 +92,8 @@ public class Park {
 		public boolean freeSpot(int row, int column, int year, int month, int day, int hour, int minute) {
 			LocalDateTime startParkingTime = parkingStartTimes[row][column];
 			LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
-			if (parkingSpaces[row][column]) {
-				parkingSpaces[row][column] = false;
+			if (parkingSpaces[row][column].isOccupied()) {
+				parkingSpaces[row][column].freeSpot();
 				System.out.println("Spot successfully freed.\n" + "Total price: "
 						+ rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + "\nTotal Time: "
 						+ rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
@@ -102,7 +109,8 @@ public class Park {
 			System.out.println("Parking Entrance");
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < columns; j++) {
-					System.out.print((parkingSpaces[i][j] ? "[X]" : "[ ]") + " ");
+					CarSpace spot = parkingSpaces[i][j];
+					System.out.print((spot.isOccupied() ? "[X]" : "[ ]") + spot.getSpotId() + " ");
 				}
 				System.out.println();
 			}
@@ -124,25 +132,26 @@ public class Park {
 		}
 	
 		public void registerVehicleForClient() {
-			Scanner sc = new Scanner(System.in);
-			System.out.print("Enter the client ID: ");
-			int clientId = sc.nextInt();
-			sc.nextLine();
+			try (Scanner sc = new Scanner(System.in)) {
+				System.out.print("Enter the client ID: ");
+				int clientId = sc.nextInt();
+				sc.nextLine();
 	
-			Client client = findClientById(clientId);
-			if (client == null) {
-				System.out.println("Client not found.");
-				return;
+				Client client = findClientById(clientId);
+				if (client == null) {
+					System.out.println("Client not found.");
+					return;
+				}
+	
+				System.out.print("Enter vehicle license plate: ");
+				String licensePlate = sc.nextLine();
+	
+				System.out.print("Enter vehicle model: ");
+				String model = sc.nextLine();
+	
+				Vehicle newVehicle = new Vehicle(licensePlate, model);
+				client.addVehicle(newVehicle);
 			}
-	
-			System.out.print("Enter vehicle license plate: ");
-			String licensePlate = sc.nextLine();
-	
-			System.out.print("Enter vehicle model: ");
-			String model = sc.nextLine();
-	
-			Vehicle newVehicle = new Vehicle(licensePlate, model);
-			client.addVehicle(newVehicle);
 		}
 	
 		public void listClientsAndVehicles() {
@@ -164,7 +173,7 @@ public class Park {
 			return new ArrayList<>(clients);
 		}
 	
-		public boolean[][] getParkingSpaces() {
+		public CarSpace[][] getParkingSpaces() {
 			return parkingSpaces;
 		}
 	
@@ -197,7 +206,7 @@ public class Park {
 		}
 	
 		public boolean isSpotOccupied(int row, int column) {
-			return getParkingSpaces()[row][column];
+			return getParkingSpaces()[row][column].isOccupied();
 		}
 		
 		public String[][] getParkingVehiclePlates() {

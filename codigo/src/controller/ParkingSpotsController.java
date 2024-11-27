@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import model.Park;
+import model.CarSpace;
 import view.ParkingSpotsView;
 
 public class ParkingSpotsController {
@@ -11,12 +12,12 @@ public class ParkingSpotsController {
 	private Park park;
 
 	private void spotClicked(int row, int col) {
-	    boolean[][] spots = park.getParkingSpaces();
-	    if (spots[row][col]) { 
+	    CarSpace spot = park.getParkingSpaces()[row][col];
+	    if (spot.isOccupied()) {
 	        view.setSelectedSpot(row, col);
 	        view.getFreeButton().setEnabled(true);    
 	        view.getOccupyButton().setEnabled(false); 
-	    } else { 
+	    } else {
 	        view.setSelectedSpot(row, col);
 	        view.getFreeButton().setEnabled(false);   
 	        view.getOccupyButton().setEnabled(true); 
@@ -130,7 +131,7 @@ public class ParkingSpotsController {
 	}
 
 	private void updateParkingView() {
-		boolean[][] parkingSpaces = park.getParkingSpaces();
+		CarSpace[][] parkingSpaces = park.getParkingSpaces();
 		view.updateParkingSpots(parkingSpaces);
 	}
 

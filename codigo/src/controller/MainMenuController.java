@@ -54,6 +54,11 @@ public class MainMenuController {
 		ParkingSizeController controller = new ParkingSizeController(view, park);
 		view.setVisible(true);
 	}
+
+	@SuppressWarnings("unused")
+	private void methodWithUnusedVariable() {
+		// Method implementation
+	}
 }
 
 

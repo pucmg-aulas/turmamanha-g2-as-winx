@@ -23,8 +23,9 @@ public  class Client {
         this.baseValue = baseValue;
     }
 
-    public Client(double baseValue2) {
-        //TODO Auto-generated constructor stub
+    public Client(double baseValue) {
+        this.baseValue = baseValue;
+        this.vehicles = new ArrayList<>();
     }
 
     public int getId() {

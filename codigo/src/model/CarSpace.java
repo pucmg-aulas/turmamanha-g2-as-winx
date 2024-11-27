@@ -2,7 +2,8 @@ package model;
 
 public class CarSpace {
 
-    private String spotId;
+    private String row;
+    private int number;
     private boolean isOccupied;
     private double baseValue;
 
@@ -10,23 +11,41 @@ public class CarSpace {
         
     }
     
-    public CarSpace(String spotId) {
-        this.spotId = spotId;
-        this.isOccupied = false; 
+    public CarSpace(String row, int number) {
+        this.row = row.toUpperCase();
+        this.number = number;
+        this.isOccupied = false;
     }
 
- 
-    public CarSpace(double baseValue) {
+    public CarSpace(String row, int number, double baseValue) {
+        this.row = row.toUpperCase();
+        this.number = number;
         this.baseValue = baseValue;
         this.isOccupied = false;
     }
 
-    public String getSpotId() {
-        return spotId;
+    public CarSpace(double baseValue) {
+        this.baseValue = baseValue;
     }
 
-    public void setSpotId(String spotId) {
-        this.spotId = spotId;
+    public String getSpotId() {
+        return String.format("%s%02d", row, number);
+    }
+
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row.toUpperCase();
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public boolean isOccupied() {
@@ -41,7 +60,7 @@ public class CarSpace {
     public void allocateSpot(RentalOfCarSpace rentalOfCarSpace) {
         if (!isOccupied) {
             this.isOccupied = true;
-            System.out.println("Spot allocated: " + this.spotId);
+            System.out.println("Spot allocated: " + getSpotId());
             
         } else {
             System.out.println("Spot is already occupied.");
@@ -51,7 +70,7 @@ public class CarSpace {
     public void freeSpot() {
         if (isOccupied) {
             this.isOccupied = false;
-            System.out.println("Spot freed: " + this.spotId);
+            System.out.println("Spot freed: " + getSpotId());
         } else {
             System.out.println("Spot is already available.");
         }
@@ -61,6 +80,9 @@ public class CarSpace {
         return baseValue;
     }
 
+    public void setBaseValue(double baseValue) {
+        this.baseValue = baseValue;
+    }
 
 }
 

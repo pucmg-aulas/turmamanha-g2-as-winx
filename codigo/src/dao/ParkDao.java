@@ -14,6 +14,7 @@ import java.util.List;
 import model.Client;
 import model.Park;
 import model.Vehicle;
+import model.CarSpace;
 
 public class ParkDao {
 
@@ -30,22 +31,19 @@ public class ParkDao {
 
                 for (int i = 0; i < park.getRows(); i++) {
                     for (int j = 0; j < park.getColumns(); j++) {
-                        if (park.getParkingSpaces()[i][j]) {
+                        CarSpace spot = park.getParkingSpaces()[i][j];
+                        if (spot.isOccupied()) {
                             LocalDateTime startTime = park.getParkingStartTimes()[i][j];
 
                             if (startTime != null) {
                                 for (Vehicle vehicle : client.getVehicles()) {
-                                    if (vehicle.getPlate().equalsIgnoreCase(vehicle.getPlate()) && 
-                                        !writtenPlates.contains(vehicle.getPlate())) {
-                                            
-                                        if (park.getParkingStartTimes()[i][j] != null) {
-                                            String formattedDate = startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                                            writer.write("  Vehicle: " + vehicle.getPlate() + " (Model: " + vehicle.getModel() +
-                                                    ") - Spot: " + i + ", " + j + " - Occupied on: " + formattedDate + "\n");
+                                    if (!writtenPlates.contains(vehicle.getPlate())) {
+                                        String formattedDate = startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                                        writer.write("  Vehicle: " + vehicle.getPlate() + " (Model: " + vehicle.getModel() +
+                                                ") - Spot: " + spot.getSpotId() + " - Occupied on: " + formattedDate + "\n");
 
-                                            writtenPlates.add(vehicle.getPlate());
-                                            break; 
-                                        }
+                                        writtenPlates.add(vehicle.getPlate());
+                                        break;
                                     }
                                 }
                             }
