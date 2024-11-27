@@ -1,6 +1,9 @@
 package controller;
 
 import model.Client;
+import model.ClientElder;
+import model.ClientPcd;
+import model.ClientVip;
 import model.Park;
 import view.AddClientView;
 
@@ -20,17 +23,33 @@ public class AddClientController {
 
     private void registerNormalClient() {
         String name = view.getClientName().trim();
+        String clientType = view.getSelectedClientType();
         
         if (name.isEmpty()) {
             view.showErrorMessage("Please enter a client name!");
             return;
         }
 
-        Client newClient = new Client(clientId, name);
+        Client newClient;
+        switch (clientType) {
+            case "ELDER":
+                newClient = new ClientElder(clientId, name);
+                break;
+            case "PCD":
+                newClient = new ClientPcd(clientId, name);
+                break;
+            case "VIP":
+                newClient = new ClientVip(clientId, name);
+                break;
+            default:
+                newClient = new Client(clientId, name);
+        }
+
         park.addClient(newClient);
         
         String successMessage = "Client registered successfully!\n" +
                               "Name: " + name + "\n" +
+                              "Type: " + clientType + "\n" +
                               "ID: " + clientId;
         view.showSuccessMessage(successMessage);
         
