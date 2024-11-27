@@ -2,9 +2,12 @@ package controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 
 import model.Park;
 import model.CarSpace;
+import model.Client;
+import model.Vehicle;
 import view.ParkingSpotsView;
 
 public class ParkingSpotsController {
@@ -104,15 +107,20 @@ public class ParkingSpotsController {
 			return;
 		}
 
+		if (!park.isSpotOccupied(row, col)) {
+			view.showErrorMessage("This spot is already free!");
+			return;
+		}
+
 		String yearStr = view.getYear();
 		String monthStr = view.getMonth();
 		String dayStr = view.getDay();
 		String hourStr = view.getHour();
 		String minuteStr = view.getMinute();
 
-		if (!isNumeric(yearStr) || !isNumeric(monthStr) || !isNumeric(dayStr) || !isNumeric(hourStr)
-				|| !isNumeric(minuteStr)) {
-			view.showErrorMessage("Please fill out Year, Month, Day, Hour, and Minute with valid numbers.");
+		// Validate input
+		if (!isValidDateTime(yearStr, monthStr, dayStr, hourStr, minuteStr)) {
+			view.showErrorMessage("Please enter valid date and time values.");
 			return;
 		}
 
@@ -122,11 +130,62 @@ public class ParkingSpotsController {
 		int hour = Integer.parseInt(hourStr);
 		int minute = Integer.parseInt(minuteStr);
 
-		boolean success = park.freeSpot(row, col, year, month, day, hour, minute);
-		if (success) {
+		// Get parking details before freeing the spot
+		String spotId = park.getParkingSpaces()[row][col].getSpotId();
+		String vehiclePlate = park.getParkingVehiclePlates()[row][col];
+		
+		// Find client and vehicle information
+		Client parkingClient = null;
+		Vehicle parkedVehicle = null;
+		for (Client client : park.getClients()) {
+			for (Vehicle vehicle : client.getVehicles()) {
+				if (vehicle.getPlate().equals(vehiclePlate)) {
+					parkingClient = client;
+					parkedVehicle = vehicle;
+					break;
+				}
+			}
+			if (parkingClient != null) break;
+		}
+
+		// Calculate duration and price
+		LocalDateTime startTime = park.getParkingStartTimes()[row][col];
+		LocalDateTime endTime = LocalDateTime.of(year, month, day, hour, minute);
+		String duration = park.getRentalOfCarSpace().calculateTime(startTime, endTime);
+		double price = park.getRentalOfCarSpace().calculatePrice(startTime, endTime);
+
+		// Free the spot
+		if (park.freeSpot(row, col, year, month, day, hour, minute)) {
+			// Show receipt
+			String clientName = parkingClient != null ? parkingClient.getName() : "Unknown";
+			String clientId = parkingClient != null ? String.valueOf(parkingClient.getId()) : "N/A";
+			String vehicleInfo = parkedVehicle != null ? 
+				parkedVehicle.getModel() + " (Plate: " + parkedVehicle.getPlate() + ")" : 
+				"Unknown Vehicle";
+
+			view.showParkingReceipt(clientName, clientId, spotId, vehicleInfo, duration, price);
+			
+			// Update the UI
 			updateParkingView();
-			view.showSuccessMessage("Spot successfully freed.");
 			view.clearFields();
+		}
+	}
+
+	private boolean isValidDateTime(String year, String month, String day, String hour, String minute) {
+		try {
+			int y = Integer.parseInt(year);
+			int m = Integer.parseInt(month);
+			int d = Integer.parseInt(day);
+			int h = Integer.parseInt(hour);
+			int min = Integer.parseInt(minute);
+
+			return y >= 2000 && y <= 2100 && 
+				   m >= 1 && m <= 12 &&
+				   d >= 1 && d <= 31 &&
+				   h >= 0 && h <= 23 &&
+				   min >= 0 && min <= 59;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 

@@ -35,6 +35,7 @@ public class Park {
 			initializeParkingSpaces();
 			this.rentalOfCarSpace = new RentalOfCarSpace();
 			this.parkDao = new ParkDao();
+			this.parkingVehiclePlates = new String[rows][columns];
 		}
 	
 		private void initializeParkingSpaces() {
@@ -86,18 +87,46 @@ public class Park {
 			System.out.println("Spot successfully occupied by vehicle " + selectedVehicle.getModel() + " (Plate: "
 					+ selectedVehicle.getPlate() + ")" + " at " + startParkingTime);
 			parkDao.savePark(this);
+			parkingVehiclePlates[row][column] = licensePlate;
 			return true;
 		}
 	
 		public boolean freeSpot(int row, int column, int year, int month, int day, int hour, int minute) {
+			
 			LocalDateTime startParkingTime = parkingStartTimes[row][column];
 			LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
+			
 			if (parkingSpaces[row][column].isOccupied()) {
+				// Get the vehicle plate from the spot
+				String vehiclePlate = parkingVehiclePlates[row][column];
+				
+				// Find the client who owns this vehicle
+				Client parkingClient = null;
+				for (Client client : clients) {
+					for (Vehicle vehicle : client.getVehicles()) {
+						if (vehicle.getPlate().equals(vehiclePlate)) {
+							parkingClient = client;
+							break;
+						}
+					}
+					if (parkingClient != null) break;
+				}
+				
 				parkingSpaces[row][column].freeSpot();
-				System.out.println("Spot successfully freed.\n" + "Total price: "
-						+ rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime) + "\nTotal Time: "
-						+ rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime));
-	
+				double price = rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime);
+				String duration = rentalOfCarSpace.calculateTime(startParkingTime, endParkingTime);
+				
+				StringBuilder receipt = new StringBuilder();
+				receipt.append("=== Parking Receipt ===\n");
+				if (parkingClient != null) {
+					receipt.append("Client: ").append(parkingClient.getName()).append("\n");
+					receipt.append("Client ID: ").append(parkingClient.getId()).append("\n");
+				}
+				receipt.append("Spot: ").append(parkingSpaces[row][column].getSpotId()).append("\n");
+				receipt.append("Duration: ").append(duration).append("\n");
+				receipt.append("Total Price: R$").append(String.format("%.2f", price));
+				
+				System.out.println(receipt.toString());
 				return true;
 			} else {
 				System.out.println("The spot is already free!");
@@ -219,6 +248,10 @@ public class Park {
 		
 		public boolean verifySize(int value) {
 			return value > minSize && value < maxSize;
+		}
+
+		public RentalOfCarSpace getRentalOfCarSpace() {
+			return rentalOfCarSpace;
 		}
 
 }

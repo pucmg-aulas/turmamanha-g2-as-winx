@@ -278,4 +278,21 @@ public class ParkingSpotsView extends JFrame {
 	public void showErrorMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
+
+	public void showParkingReceipt(String clientName, String clientId, String spotId, 
+	                              String vehicleInfo, String duration, double price) {
+		StringBuilder message = new StringBuilder();
+		message.append("=== Parking Receipt ===\n\n");
+		message.append("Client: ").append(clientName).append("\n");
+		message.append("Client ID: ").append(clientId).append("\n");
+		message.append("Spot: ").append(spotId).append("\n");
+		message.append("Vehicle: ").append(vehicleInfo).append("\n");
+		message.append("Duration: ").append(duration).append("\n");
+		message.append("Total Price: R$").append(String.format("%.2f", price));
+
+		JOptionPane.showMessageDialog(this,
+			message.toString(),
+			"Parking Receipt",
+			JOptionPane.INFORMATION_MESSAGE);
+	}
 }

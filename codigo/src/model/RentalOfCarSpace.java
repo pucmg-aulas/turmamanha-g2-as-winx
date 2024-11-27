@@ -71,33 +71,23 @@ public class RentalOfCarSpace {
 	}
 
 	public Double calculatePrice(LocalDateTime startRental, LocalDateTime endRental) {
-		Double fraction = 4.0;
-		Double fractionPrice = 0.0;
-		Double hourPrice;
-		Double totalPrice;
+		Double fractionPrice = 4.0; // Price per 15-minute fraction
+		Double totalPrice = 0.0;
 
 		Duration duration = Duration.between(startRental, endRental);
-		Long minutes = duration.toMinutes();
-		Long hours = duration.toHours();
+		Long totalMinutes = duration.toMinutes();
+		
+		// Calculate number of complete 15-minute fractions
+		Long fractions = (totalMinutes + 14) / 15; // Round up to next fraction
+		
+		// Calculate total price (R$4 per fraction)
+		totalPrice = fractionPrice * fractions;
 
-		if (minutes > 15) {
-			if (minutes / 15 > 3) {
-				fractionPrice = fraction * 4;
-			} else if (minutes / 15 > 2) {
-				fractionPrice = fraction * 3;
-			} else if (minutes / 15 > 1) {
-				fractionPrice = fraction * 2;
-			} else {
-				fractionPrice = fraction;
-			}
-		}
-
-		hourPrice = hours * fraction * 4;
-		totalPrice = hourPrice + fractionPrice;
-
-		if (totalPrice > 50) {
+		// Apply maximum price cap
+		if (totalPrice > 50.0) {
 			totalPrice = 50.0;
 		}
+		
 		return totalPrice;
 	}
 
