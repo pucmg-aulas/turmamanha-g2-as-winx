@@ -71,7 +71,7 @@ public class RentalOfCarSpace {
 	}
 
 	public Double calculatePrice(LocalDateTime startRental, LocalDateTime endRental) {
-		Double fractionPrice = 4.0; // Price per 15-minute fraction
+		Double fractionPrice = 4.0; // Base price per 15-minute fraction
 		Double totalPrice = 0.0;
 
 		Duration duration = Duration.between(startRental, endRental);
@@ -80,8 +80,17 @@ public class RentalOfCarSpace {
 		// Calculate number of complete 15-minute fractions
 		Long fractions = (totalMinutes + 14) / 15; // Round up to next fraction
 		
-		// Calculate total price (R$4 per fraction)
+		// Calculate base price (R$4 per fraction)
 		totalPrice = fractionPrice * fractions;
+
+		// Apply spot type modifiers
+		if (this.carSpace instanceof Vip) {
+			totalPrice *= (1 + ((Vip) this.carSpace).getIncrease());
+		} else if (this.carSpace instanceof Elder) {
+			totalPrice *= (1 - ((Elder) this.carSpace).getDiscount());
+		} else if (this.carSpace instanceof Pcd) {
+			totalPrice *= (1 - ((Pcd) this.carSpace).getDiscount());
+		}
 
 		// Apply maximum price cap
 		if (totalPrice > 50.0) {

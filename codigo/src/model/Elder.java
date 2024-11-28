@@ -24,4 +24,8 @@ public class Elder extends CarSpace {
     public double getTotalValue() {
         return discountPrice;
     }
+
+    public double getDiscount() {
+        return DISCOUNT;
+    }
 }

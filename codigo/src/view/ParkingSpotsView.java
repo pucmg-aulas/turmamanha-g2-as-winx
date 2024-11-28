@@ -10,6 +10,9 @@ import java.util.List;
 import model.Client;
 import model.Vehicle;
 import model.CarSpace;
+import model.Vip;
+import model.Elder;
+import model.Pcd;
 
 public class ParkingSpotsView extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -234,14 +237,38 @@ public class ParkingSpotsView extends JFrame {
 			for (int j = 0; j < parkingSpaces[i].length; j++) {
 				CarSpace spot = parkingSpaces[i][j];
 				String spotId = spot.getSpotId();
-				if (spot.isOccupied()) {
-					spotLabels[i][j].setText("[" + spotId + "*]");
-					spotLabels[i][j].setBackground(Color.RED);
+				String label = spotId;
+				
+				// Define colors and labels based on spot type
+				Color backgroundColor;
+				if (spot instanceof Vip) {
+					backgroundColor = new Color(255, 255, 200); // Amarelo suave
+					label = spotId + "\n(VIP)";
+				} else if (spot instanceof Elder) {
+					backgroundColor = new Color(200, 200, 255); // Azul suave
+					label = spotId + "\n(IDOSO)";
+				} else if (spot instanceof Pcd) {
+					backgroundColor = new Color(220, 220, 220); // Cinza suave
+					label = spotId + "\n(PCD)";
 				} else {
-					spotLabels[i][j].setText("[" + spotId + "]");
-					spotLabels[i][j].setBackground(Color.GREEN);
+					backgroundColor = new Color(220, 255, 220); // Verde suave
+					label = spotId;
 				}
-				spotLabels[i][j].setToolTipText("Vaga: " + spotId);
+
+				// Apply occupied status
+				if (spot.isOccupied()) {
+					spotLabels[i][j].setText("<html>" + label.replace("\n", "<br>") + "*</html>");
+					spotLabels[i][j].setBackground(new Color(255, 200, 200)); // Vermelho suave
+				} else {
+					spotLabels[i][j].setText("<html>" + label.replace("\n", "<br>") + "</html>");
+					spotLabels[i][j].setBackground(backgroundColor);
+				}
+				
+				// Add tooltip with spot information
+				spotLabels[i][j].setToolTipText("Vaga: " + spotId + 
+					(spot instanceof Vip ? " (Vaga VIP)" : 
+					 spot instanceof Elder ? " (Vaga para Idosos)" : 
+					 spot instanceof Pcd ? " (Vaga PCD)" : ""));
 			}
 		}
 	}

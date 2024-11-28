@@ -42,7 +42,30 @@ public class Park {
 			for (int i = 0; i < rows; i++) {
 				String rowLetter = String.valueOf((char)('A' + i));
 				for (int j = 0; j < columns; j++) {
-					parkingSpaces[i][j] = new CarSpace(rowLetter, j + 1);
+					double baseValue = 4.0; // Base price per 15-minute fraction
+					
+					if (i == 0) {
+						// First row - VIP spots
+						parkingSpaces[i][j] = new Vip(true, true, baseValue);
+					}
+					else if (i == 1) {
+						// Second row - Elder and PCD spots
+						if (j < columns/2 || (columns % 2 != 0 && j == columns/2)) {
+							// First half (and middle spot if odd) - Elder spots
+							parkingSpaces[i][j] = new Elder(baseValue);
+						} else {
+							// Second half - PCD spots
+							parkingSpaces[i][j] = new Pcd(true, baseValue);
+						}
+					}
+					else {
+						// Regular spots for all other rows
+						parkingSpaces[i][j] = new CarSpace(rowLetter, j + 1);
+					}
+					
+					// Set the spot ID for all spaces
+					parkingSpaces[i][j].setRow(rowLetter);
+					parkingSpaces[i][j].setNumber(j + 1);
 				}
 			}
 		}
@@ -92,7 +115,6 @@ public class Park {
 		}
 	
 		public boolean freeSpot(int row, int column, int year, int month, int day, int hour, int minute) {
-			
 			LocalDateTime startParkingTime = parkingStartTimes[row][column];
 			LocalDateTime endParkingTime = LocalDateTime.of(year, month, day, hour, minute);
 			
@@ -111,6 +133,9 @@ public class Park {
 					}
 					if (parkingClient != null) break;
 				}
+				
+				// Set the car space in rentalOfCarSpace before calculating price
+				rentalOfCarSpace.setCarSpace(parkingSpaces[row][column]);
 				
 				parkingSpaces[row][column].freeSpot();
 				double price = rentalOfCarSpace.calculatePrice(startParkingTime, endParkingTime);
@@ -253,5 +278,4 @@ public class Park {
 		public RentalOfCarSpace getRentalOfCarSpace() {
 			return rentalOfCarSpace;
 		}
-
 }

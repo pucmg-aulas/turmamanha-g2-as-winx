@@ -43,4 +43,8 @@ public class Vip extends CarSpace {
     public double getTotalValue() {
         return super.getBaseValue() + increaseValue;
     }
+
+    public double getIncrease() {
+        return INCREASE;
+    }
 }

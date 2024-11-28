@@ -152,11 +152,16 @@ public class ParkingSpotsController {
 		LocalDateTime startTime = park.getParkingStartTimes()[row][col];
 		LocalDateTime endTime = LocalDateTime.of(year, month, day, hour, minute);
 		String duration = park.getRentalOfCarSpace().calculateTime(startTime, endTime);
+
+		// Importante: Primeiro configure o CarSpace no RentalOfCarSpace
+		park.getRentalOfCarSpace().setCarSpace(park.getParkingSpaces()[row][col]);
+
+		// Agora calcule o preço - isso aplicará o aumento VIP se necessário
 		double price = park.getRentalOfCarSpace().calculatePrice(startTime, endTime);
 
 		// Free the spot
 		if (park.freeSpot(row, col, year, month, day, hour, minute)) {
-			// Show receipt
+			// Show receipt com o preço já calculado corretamente
 			String clientName = parkingClient != null ? parkingClient.getName() : "Unknown";
 			String clientId = parkingClient != null ? String.valueOf(parkingClient.getId()) : "N/A";
 			String vehicleInfo = parkedVehicle != null ? 

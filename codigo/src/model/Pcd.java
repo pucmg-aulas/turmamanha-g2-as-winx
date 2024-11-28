@@ -33,4 +33,8 @@ public class Pcd extends CarSpace {
     public double getTotalValue() {
         return discountedPrice;
     }
+
+    public double getDiscount() {
+        return DISCOUNT;
+    }
 }
