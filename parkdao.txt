@@ -1,3 +1,2 @@
-Rows: 5, Columns: 5
+Rows: 19, Columns: 19
 Client: Joao (ID: 1)
-  Vehicle: 123 (Model: ethios) - Spot: B04 - Occupied on: 27/11/2024 00:00

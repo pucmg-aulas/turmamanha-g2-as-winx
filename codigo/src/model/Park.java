@@ -278,4 +278,8 @@ public class Park {
 		public RentalOfCarSpace getRentalOfCarSpace() {
 			return rentalOfCarSpace;
 		}
+
+		public void setParkingSpaces(CarSpace[][] parkingSpaces) {
+			this.parkingSpaces = parkingSpaces;
+		}
 }
