@@ -15,7 +15,7 @@ public class AddClientController {
     public AddClientController(AddClientView view, Park park) {
         this.view = view;
         this.park = park;
-        this.clientId = 1;
+        this.clientId = park.getClients().size() + 1;
 
         this.view.addRegisterNormalListener(e -> registerNormalClient());
         this.view.addRegisterAnonymousListener(e -> registerAnonymousClient());
