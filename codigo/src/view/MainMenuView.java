@@ -31,6 +31,7 @@ import javax.swing.SwingConstants;
 		private JButton btnParkingSpots;
 		private JButton btnSetParkingSize;
 		private JButton btnViewHistory;
+		private JButton btnRevenue;
 	
 		/**
 		 * Launch the application.
@@ -84,6 +85,9 @@ import javax.swing.SwingConstants;
 			
 			btnViewHistory = new JButton("View Parking History");
 			panel.add(btnViewHistory);
+			
+			btnRevenue = new JButton("Revenue Statistics");
+			panel.add(btnRevenue);
 		}
 	
 		public void addClientListener(ActionListener listener) {
@@ -104,5 +108,9 @@ import javax.swing.SwingConstants;
 
 		public void addViewHistoryListener(ActionListener listener) {
 		    btnViewHistory.addActionListener(listener);
+		}
+
+		public void addRevenueListener(ActionListener listener) {
+		    btnRevenue.addActionListener(listener);
 		}
 	}

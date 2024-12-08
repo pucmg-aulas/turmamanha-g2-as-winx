@@ -16,6 +16,7 @@ import view.MainMenuView;
 import view.ParkingSizeView;
 import view.ParkingSpotsView;
 import view.ParkingHistoryView;
+import view.RevenueView;
 
 public class MainMenuController {
 	
@@ -31,6 +32,7 @@ public class MainMenuController {
 		this.view.addParkingSpotsListener(e -> showParkingSpotsView());
 		this.view.addParkingSizeListener(e -> showParkingSizeView());
 		this.view.addViewHistoryListener(e -> showParkingHistoryView());
+		this.view.addRevenueListener(e -> initializeRevenueView());
 	}
 
 	public void showAddClientView() {
@@ -61,6 +63,12 @@ public class MainMenuController {
 		ParkingHistoryView view = new ParkingHistoryView();
 		ParkingHistoryController controller = new ParkingHistoryController(view, park);
 		view.setVisible(true);
+	}
+
+	private void initializeRevenueView() {
+		RevenueView revenueView = new RevenueView();
+		RevenueController revenueController = new RevenueController(revenueView, park);
+		revenueView.setVisible(true);
 	}
 
 	@SuppressWarnings("unused")

@@ -18,6 +18,7 @@ import db.DbException;
 import model.Client;
 import model.Park;
 import model.Vehicle;
+import model.RevenueTracker;
 import view.MainMenuView;
 import view.ParkingSpotsView;
 
@@ -58,25 +59,27 @@ public class Main {
 	}
 
 	private static void initializeTestData(Park park) {
-		
 		List<Client> clients = new ArrayList<>();
 		List<Vehicle> vehicles = new ArrayList<>();	
-		
 		
 		ParkDao parkDao = new ParkDao();
 		ClientDao clientDao = new ClientDao();
 		VehicleDao vehicleDao = new VehicleDao();
 
-		
 		clientDao.loadClients();
 		parkDao.loadPark(park);
 		vehicleDao.loadVehicles();
+		
+		// Initialize RevenueTracker with park reference
+		RevenueTracker revenueTracker = new RevenueTracker(park);
+		park.setRevenueTracker(revenueTracker);
 	}
 
 	private static void runGraphicalInterface(Park park) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				MainMenuView mainMenu = new MainMenuView(); 
+				@SuppressWarnings("unused")
 				MainMenuController controller = new MainMenuController(mainMenu, park); 
 				mainMenu.setVisible(true);
 			}

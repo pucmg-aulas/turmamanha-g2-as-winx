@@ -1,3 +1,5 @@
 Rows: 5, Columns: 5
 Client: Joao (ID: 1)
-  Vehicle: 123 (Model: corola) - Spot: B03 - Occupied on: 08/12/2024 14:00
+  Vehicle: 123 (Model: corola) - Spot: A01 - Occupied on: 12/10/2024 20:00
+Client: jose (ID: 2)
+  Vehicle: 234 (Model: corsa) - Spot: A01 - Occupied on: 12/10/2024 20:00

@@ -25,6 +25,8 @@ public class Park {
 	
 		private List<ParkingHistory> parkingHistory = new ArrayList<>();
 	
+		private RevenueTracker revenueTracker;
+	
 		public Park() {
 			this(8, 8);
 		}
@@ -39,6 +41,7 @@ public class Park {
 			this.rentalOfCarSpace = new RentalOfCarSpace();
 			this.parkDao = new ParkDao();
 			this.parkingVehiclePlates = new String[rows][columns];
+			this.revenueTracker = new RevenueTracker(this);
 		}
 	
 		private void initializeParkingSpaces() {
@@ -301,5 +304,13 @@ public class Park {
 					return true;
 				})
 				.collect(Collectors.toList());
+		}
+
+		public void setRevenueTracker(RevenueTracker revenueTracker) {
+			this.revenueTracker = revenueTracker;
+		}
+
+		public RevenueTracker getRevenueTracker() {
+			return revenueTracker;
 		}
 }

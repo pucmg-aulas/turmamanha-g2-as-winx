@@ -184,6 +184,9 @@ public class ParkingSpotsController {
 				price
 			);
 			park.addParkingHistory(historyRecord);
+			
+			// Add this line to update revenue tracker
+			park.getRevenueTracker().addParkingRecord(historyRecord);
 		}
 	}
 
