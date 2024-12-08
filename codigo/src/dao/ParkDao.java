@@ -18,7 +18,7 @@ import model.CarSpace;
 
 public class ParkDao {
 
-    private static final String FILE_NAME = "parkdao.txt";
+    private static final String FILE_NAME = "codigo/parkdao.txt";
 
     public void savePark(Park park) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
@@ -58,11 +58,11 @@ public class ParkDao {
     }
 
     public void loadPark(Park park) {
+        System.out.println("Attempting to load park configuration from: " + FILE_NAME);
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             Client currentClient = null;
             Vehicle currentVehicle = null;
-            List<Vehicle> vehicles = new ArrayList<>();
 
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Client:")) {
@@ -77,7 +77,6 @@ public class ParkDao {
                         park.addClient(currentClient);
                     }
                 } else if (line.startsWith("  Vehicle:")) {
-                    
                     if (currentClient == null) {
                         System.out.println("Vehicle found before a client: " + line);
                         continue; 
@@ -87,30 +86,34 @@ public class ParkDao {
                     String[] vehicleParts = vehicleInfo.split(" \\(Model: |\\) - Spot: | - Occupied on: ");
                     String plate = vehicleParts[0];
                     String model = vehicleParts[1];
-                    String[] positionParts = vehicleParts[2].split(", ");
-                    
+                    String spotId = vehicleParts[2];
+                    String dateTimeString = vehicleParts[3];
+
+                    int row = spotId.charAt(0) - 'A';  // 'A' -> 0, 'B' -> 1, etc.
+                    int column = Integer.parseInt(spotId.substring(1)) - 1;  // "01" -> 0, "02" -> 1, etc.
+
                     currentVehicle = new Vehicle(plate, model);
                     currentClient.addVehicle(currentVehicle);
-                    
-                    int row = Integer.parseInt(positionParts[0]);
-                    int column = Integer.parseInt(positionParts[1]);
-                    String dateTimeString = vehicleParts[3]; 
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     LocalDateTime startTime = LocalDateTime.parse(dateTimeString, formatter);
+                    
                     if (!park.occupySpot(row, column, currentClient.getId(), plate, startTime.getYear(),
                             startTime.getMonthValue(), startTime.getDayOfMonth(),
                             startTime.getHour(), startTime.getMinute())) {
-                        System.out.println("Failed to occupy the spot for vehicle " + plate);
+                        System.out.println("Failed to occupy spot " + spotId + " for vehicle " + plate);
+                    } else {
+                        System.out.println("Successfully occupied spot " + spotId + " for vehicle " + plate);
                     }
                 }
             }
+            System.out.println("Successfully loaded park configuration");
         } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
-        } catch (DateTimeParseException e) {
-            System.err.println("Error parsing date and time: " + e.getMessage());
+            System.err.println("Error loading park configuration: " + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

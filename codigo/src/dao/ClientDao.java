@@ -13,7 +13,7 @@ import model.Vehicle;
 
 public class ClientDao {
 
-    private static final String FILE_PATH = "clients.txt";
+    private static final String FILE_PATH = "codigo/clients.txt";
 
     public void saveClients(List<Client> clients) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
@@ -34,6 +34,7 @@ public class ClientDao {
 
     public List<Client> loadClients() {
         List<Client> clients = new ArrayList<>();
+        System.out.println("Attempting to load clients from: " + FILE_PATH);
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             Client client = null;
@@ -59,7 +60,9 @@ public class ClientDao {
                     client = null;
                 }
             }
+            System.out.println("Successfully loaded " + clients.size() + " clients");
         } catch (IOException e) {
+            System.err.println("Error loading clients: " + e.getMessage());
             e.printStackTrace();
         }
         return clients;

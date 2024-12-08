@@ -1,5 +1,8 @@
-123,onix
-124,voyage
-125,corolla
-000,bmw
-777, TCROSS
+ABC123,Toyota Corolla
+XYZ789,Honda Civic
+DEF456,Ford Focus
+GHI789,Chevrolet Cruze
+JKL012,Volkswagen Golf
+MNO345,Hyundai Elantra
+PQR678,Nissan Sentra
+STU901,BMW 320i

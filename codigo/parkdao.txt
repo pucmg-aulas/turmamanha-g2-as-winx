@@ -1,3 +1,11 @@
-Rows: 3, Columns: 3
-Client: Test Client (ID: 1)
-  Vehicle: ABC123 (Model: Test Car) - Spot: A01 - Occupied on: 15/03/2024 14:30
+Rows: 5, Columns: 5
+Client: John Smith (ID: 1)
+  Vehicle: ABC123 (Model: Toyota Corolla) - Spot: A01 - Occupied on: 08/12/2024 17:00
+Client: Mary Johnson (ID: 2)
+  Vehicle: DEF456 (Model: Ford Focus) - Spot: A01 - Occupied on: 08/12/2024 17:00
+Client: Robert Wilson (ID: 3)
+  Vehicle: GHI789 (Model: Chevrolet Cruze) - Spot: A01 - Occupied on: 08/12/2024 17:00
+Client: Sarah Davis (ID: 4)
+  Vehicle: MNO345 (Model: Hyundai Elantra) - Spot: A01 - Occupied on: 08/12/2024 17:00
+Client: Michael Brown (ID: 5)
+  Vehicle: PQR678 (Model: Nissan Sentra) - Spot: A01 - Occupied on: 08/12/2024 17:00

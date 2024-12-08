@@ -1,12 +1,18 @@
-6,Alice
-V,123,onix
-V,124,voyage
+1,John Smith
+V,ABC123,Toyota Corolla
+V,XYZ789,Honda Civic
 END
-7,Bob
-V,125,corolla
+2,Mary Johnson
+V,DEF456,Ford Focus
 END
-8,Christian
-V,000,bmw
+3,Robert Wilson
+V,GHI789,Chevrolet Cruze
+V,JKL012,Volkswagen Golf
 END
-9,Maria
+4,Sarah Davis
+V,MNO345,Hyundai Elantra
+END
+5,Michael Brown
+V,PQR678,Nissan Sentra
+V,STU901,BMW 320i
 END

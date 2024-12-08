@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleDao {
-	private static final String FILE_NAME = "vehicles.txt";
+	private static final String FILE_NAME = "codigo/vehicles.txt";
 
 	public void saveAllVehicles(List<Vehicle> vehicles) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
@@ -34,6 +34,7 @@ public class VehicleDao {
 
 	public List<Vehicle> loadVehicles() {
 		List<Vehicle> vehicles = new ArrayList<>();
+		System.out.println("Attempting to load vehicles from: " + FILE_NAME);
 		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
 			String line;
 
@@ -45,9 +46,10 @@ public class VehicleDao {
 					vehicles.add(new Vehicle(plate, model));
 				}
 			}
-			System.out.println("Vehicles loaded from " + FILE_NAME);
+			System.out.println("Successfully loaded " + vehicles.size() + " vehicles");
 		} catch (IOException e) {
 			System.err.println("Error loading vehicles: " + e.getMessage());
+			e.printStackTrace();
 		}
 		return vehicles;
 	}

@@ -25,6 +25,7 @@ import view.ParkingSpotsView;
 public class Main {
 
 	public static void main(String[] args) {
+		System.out.println("Working Directory = " + System.getProperty("user.dir"));
 		Park park = new Park(5, 5);
 
 		initializeTestData(park);
@@ -66,13 +67,25 @@ public class Main {
 		ClientDao clientDao = new ClientDao();
 		VehicleDao vehicleDao = new VehicleDao();
 
-		clientDao.loadClients();
+		// Carregar clientes e adicioná-los ao park
+		clients = clientDao.loadClients();
+		for (Client client : clients) {
+			park.addClient(client);
+		}
+
+		// Carregar veículos
+		vehicles = vehicleDao.loadVehicles();
+		
+		// Carregar configuração do estacionamento
 		parkDao.loadPark(park);
-		vehicleDao.loadVehicles();
 		
 		// Initialize RevenueTracker with park reference
 		RevenueTracker revenueTracker = new RevenueTracker(park);
 		park.setRevenueTracker(revenueTracker);
+		
+		System.out.println("Test data initialized:");
+		System.out.println("Clients loaded: " + clients.size());
+		System.out.println("Vehicles loaded: " + vehicles.size());
 	}
 
 	private static void runGraphicalInterface(Park park) {
