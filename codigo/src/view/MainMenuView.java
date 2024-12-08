@@ -1,6 +1,7 @@
 	package view;
 	
 	import java.awt.EventQueue;
+	import java.awt.Color;
 	
 	import javax.swing.JFrame;
 	import javax.swing.JPanel;
@@ -29,6 +30,7 @@ import javax.swing.SwingConstants;
 		private JButton btnNewVehicle;
 		private JButton btnParkingSpots;
 		private JButton btnSetParkingSize;
+		private JButton btnViewHistory;
 	
 		/**
 		 * Launch the application.
@@ -80,6 +82,8 @@ import javax.swing.SwingConstants;
 			btnSetParkingSize = new JButton("Set parking size");
 			panel.add(btnSetParkingSize);
 			
+			btnViewHistory = new JButton("View Parking History");
+			panel.add(btnViewHistory);
 		}
 	
 		public void addClientListener(ActionListener listener) {
@@ -96,5 +100,9 @@ import javax.swing.SwingConstants;
 
 		public void addParkingSizeListener(ActionListener listener) {
 		    btnSetParkingSize.addActionListener(listener);
+		}
+
+		public void addViewHistoryListener(ActionListener listener) {
+		    btnViewHistory.addActionListener(listener);
 		}
 	}

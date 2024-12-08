@@ -8,6 +8,7 @@ import model.Park;
 import model.CarSpace;
 import model.Client;
 import model.Vehicle;
+import model.ParkingHistory;
 import view.ParkingSpotsView;
 
 public class ParkingSpotsController {
@@ -173,6 +174,16 @@ public class ParkingSpotsController {
 			// Update the UI
 			updateParkingView();
 			view.clearFields();
+
+			ParkingHistory historyRecord = new ParkingHistory(
+				Integer.parseInt(clientId), 
+				spotId,
+				parkedVehicle.getPlate(),
+				startTime,
+				endTime,
+				price
+			);
+			park.addParkingHistory(historyRecord);
 		}
 	}
 

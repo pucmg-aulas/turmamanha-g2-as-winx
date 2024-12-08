@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import dao.ParkDao;
 
@@ -21,6 +22,8 @@ public class Park {
 	private RentalOfCarSpace rentalOfCarSpace;
 	private ParkDao parkDao;
 		private String[][] parkingVehiclePlates;
+	
+		private List<ParkingHistory> parkingHistory = new ArrayList<>();
 	
 		public Park() {
 			this(8, 8);
@@ -281,5 +284,22 @@ public class Park {
 
 		public void setParkingSpaces(CarSpace[][] parkingSpaces) {
 			this.parkingSpaces = parkingSpaces;
+		}
+
+		public void addParkingHistory(ParkingHistory record) {
+			parkingHistory.add(record);
+		}
+
+		public List<ParkingHistory> getParkingHistoryByClient(int clientId, LocalDateTime startDate, LocalDateTime endDate) {
+			return parkingHistory.stream()
+				.filter(record -> record.getClientId() == clientId)
+				.filter(record -> {
+					if (startDate != null && endDate != null) {
+						return !record.getStartTime().isBefore(startDate) && 
+							   !record.getEndTime().isAfter(endDate);
+					}
+					return true;
+				})
+				.collect(Collectors.toList());
 		}
 }
