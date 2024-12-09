@@ -1,13 +1,16 @@
 package dao;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.DB;
 import model.Client;
 import model.Vehicle;
 
@@ -34,37 +37,40 @@ public class ClientDao {
 
     public List<Client> loadClients() {
         List<Client> clients = new ArrayList<>();
-        System.out.println("Attempting to load clients from: " + FILE_PATH);
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            Client client = null;
+        String clientQuery = "SELECT id, name FROM clients";
+        String vehicleQuery = "SELECT plate, model FROM vehicles WHERE client_id = ?";
 
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+        try (Connection connection = DB.getConnection();
+             PreparedStatement clientStatement = connection.prepareStatement(clientQuery);
+             PreparedStatement vehicleStatement = connection.prepareStatement(vehicleQuery)) {
 
-                
-                if (parts.length >= 2 && !parts[0].equals("END") && !parts[0].equals("V")) {
-                    int clientId = Integer.parseInt(parts[0].trim());
-                    String clientName = parts[1].trim();
-                    client = new Client(clientId, clientName); 
-                    clients.add(client);
-                } 
-                else if (parts.length == 3 && parts[0].equals("V") && client != null) {
-                    String vehiclePlate = parts[1].trim();
-                    String vehicleModel = parts[2].trim();
-                    Vehicle vehicle = new Vehicle(vehiclePlate, vehicleModel); 
-                    client.addVehicle(vehicle); 
+            ResultSet clientResultSet = clientStatement.executeQuery();
+
+            while (clientResultSet.next()) {
+                int clientId = clientResultSet.getInt("id");
+                String clientName = clientResultSet.getString("name");
+
+                Client client = new Client(clientId, clientName);
+
+                vehicleStatement.setInt(1, clientId);
+                ResultSet vehicleResultSet = vehicleStatement.executeQuery();
+
+                while (vehicleResultSet.next()) {
+                    String vehiclePlate = vehicleResultSet.getString("plate");
+                    String vehicleModel = vehicleResultSet.getString("model");
+
+                    Vehicle vehicle = new Vehicle(vehiclePlate, vehicleModel);
+                    client.addVehicle(vehicle);
                 }
-              
-                else if (parts.length == 1 && parts[0].equals("END")) {
-                    client = null;
-                }
+
+                clients.add(client);
             }
-            System.out.println("Successfully loaded " + clients.size() + " clients");
-        } catch (IOException e) {
-            System.err.println("Error loading clients: " + e.getMessage());
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return clients;
     }
+    
+    
 }
